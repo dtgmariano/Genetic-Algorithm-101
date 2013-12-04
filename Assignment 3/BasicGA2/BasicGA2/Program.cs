@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using GA;
 
 namespace BasicGA
 {
@@ -15,7 +16,7 @@ namespace BasicGA
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new User_Inputs_View());
+            Application.Run(new TestForm());
         }
     }
 }

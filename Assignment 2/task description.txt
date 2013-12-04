@@ -1,0 +1,4 @@
+28/08/2013 Relatório II 
+Crossover
+Mutation
+f(x) = -|x*Sin[sq(|x|)]| Min
