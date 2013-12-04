@@ -1,0 +1,31 @@
+--Algoritmos Genéticos --
+
+21/08/2013 Relatório I
+Artigo sobre AG voltada p\ área de pesquisa do aluno
+
+28/08/2013 Relatório II 
+Crossover
+Mutation
+f(x) = -|x*Sin[sq(|x|)]| Min
+
+04/09/2013 Relatório III
+Elitismo
+Torneio
+f(x) = x*sin(x) Max
+
+11/09/2013 Relatório IV
+Crossover Uniforme
+Crossover Duplo
+Implementar crossover's na função de Schwefel - Achar o Mín.
+
+Relatorio V
+Manutenção máquinas
+
+Relatorio VI
+Rainha movimentos
+
+Relatorio VII
+TSP
+
+Relatorio VIII
+Funções Novas
