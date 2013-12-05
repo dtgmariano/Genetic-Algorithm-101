@@ -23,7 +23,7 @@ namespace GA
             this.nbits = Convert.ToInt32(Math.Ceiling(Math.Log((this.max - this.min), 2))) + this.res;
             this.code = BinaryOperators.GeneratesBinaryString(this.random, this.nbits);
             this.value = BinaryOperators.BinaryStringToDecimal(this.code);
-            this.fitness = setFitness(this.value);
+            avaliationBasedOnFunction(this.value);
         }
 
         /*Constructor for offspring chromossomes*/
@@ -36,12 +36,18 @@ namespace GA
             this.nbits = Convert.ToInt32(Math.Ceiling(Math.Log((this.max - this.min), 2))) + this.res;
             this.code = _code;
             this.value = BinaryOperators.BinaryStringToDecimal(this.code);
-            this.fitness = setFitness(this.value);
+            avaliationBasedOnFunction(this.value);
         }
-        /*Avaliation*/
-        public double setFitness(double _value)
+
+        /*Avaliation methods*/
+        public void avaliationBasedOnFunction(double _value)
         {
-            return (_value * Math.Sin(_value / 5));
+            this.fitness = Equation.Fx(_value);
+        }
+
+        public void avaliationBasedOnRanking(double _score)
+        {
+            this.fitness = _score;
         }
     }
 }
