@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Genetic_Algorithm;
 using Excel = Microsoft.Office.Interop.Excel;
 using BiolabLibraries;
 
@@ -16,7 +15,7 @@ namespace GA
     public partial class Statistics_View : Form
     {
         Random random = new Random();
-        GeneticAlgorithm myGA;
+        GA myGA;
 
         List<double> column1;
         List<double> column2;

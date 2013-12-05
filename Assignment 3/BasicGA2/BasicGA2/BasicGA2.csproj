@@ -51,40 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GA Classes\Chromossome.cs" />
-    <Compile Include="GA Classes\Crossover.cs" />
-    <Compile Include="GA Classes\Elitism.cs" />
-    <Compile Include="GA Classes\Equation.cs" />
-    <Compile Include="GA Classes\Fitness.cs" />
-    <Compile Include="GA Classes\GeneticAlgorithm.cs" />
-    <Compile Include="GA Classes\Mutation.cs" />
-    <Compile Include="GA Classes\Operation.cs" />
     <Compile Include="GA\BinaryOperators.cs" />
     <Compile Include="GA\Chromossome.cs" />
     <Compile Include="GA\Equation.cs" />
     <Compile Include="GA\GA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GA Classes\Selection.cs" />
     <Compile Include="Foreign Classes\Statistics.cs" />
-    <Compile Include="View Classes\Graphic View.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View Classes\Graphic View.Designer.cs">
-      <DependentUpon>Graphic View.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View Classes\Statistic View.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View Classes\Statistic View.Designer.cs">
-      <DependentUpon>Statistic View.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View Classes\User Inputs View.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View Classes\User Inputs View.Designer.cs">
-      <DependentUpon>User Inputs View.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\Graphic View.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,7 +97,6 @@
     <EmbeddedResource Include="View\User Inputs View.resx">
       <DependentUpon>User Inputs View.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

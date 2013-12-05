@@ -192,6 +192,15 @@ namespace GA
             }
         }
 
+        public void processesGA()
+        {
+            elitismStep();
+            selectionStep();
+            crossoverStep();
+            mutationStep();
+            updateStep();
+        }
+
         /*Selection methods*/
         public void roulette_wheel()
         {
