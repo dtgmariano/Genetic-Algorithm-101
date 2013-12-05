@@ -29,7 +29,7 @@ namespace GA
             numPC.Value = 60;
             numPM.Value = 1;
             numRMin.Value = 0;
-            numRMax.Value = 500;
+            numRMax.Value = 512;
             numGran.Value = 0;
             cbSelection.SelectedIndex = 0;
             cbCrossover.SelectedIndex = 0;
