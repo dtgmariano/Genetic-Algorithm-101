@@ -12,7 +12,7 @@ namespace GA
 {
     public partial class User_Inputs_View : Form
     {
-        int ps, ng, rmin, rmax, gran, elite_count, selec_op, cross_op, mutat_op, optim_op;
+        int ps, ng, rmin, rmax, gran, elite_count, selec_op, cross_op, mutant_op, optim_op;
         double pc, pm;
         bool hasElite, hasRanking;
 
@@ -50,6 +50,7 @@ namespace GA
 
             selec_op = cbSelection.SelectedIndex;
             cross_op = cbCrossover.SelectedIndex;
+            mutant_op = cbMutation.SelectedIndex;
             optim_op = cbOptimization.SelectedIndex;
             elite_count = (int)numEC.Value;
             hasRanking = cbRanking.Enabled;
@@ -62,12 +63,16 @@ namespace GA
                 (rmin, rmax, gran, 
                 ps, ng, pc, pm, 
                 hasRanking, hasElite, elite_count, 
-                selec_op, cross_op, optim_op));
+                selec_op, cross_op, mutant_op, optim_op));
         }
 
         public void ThreadProc2()
         {
-            //Application.Run(new Statistics_View(ps, ng, pc, pm, rmin, rmax, gran, selec_op, cross_op, optim_op));
+            Application.Run(new Statistics_View
+                (rmin, rmax, gran,
+                ps, ng, pc, pm,
+                hasRanking, hasElite, elite_count,
+                selec_op, cross_op, mutant_op, optim_op));
         }
 
         private void btGo_Click(object sender, EventArgs e)

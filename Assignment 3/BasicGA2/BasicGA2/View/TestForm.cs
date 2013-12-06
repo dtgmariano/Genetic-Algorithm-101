@@ -36,7 +36,7 @@ namespace GA
             for (int i = 0; i < myGA.population.Count(); i++)
                 richTextBox1.AppendText(myGA.population[i].value.ToString() + " " + Math.Round(myGA.population[i].fitness,2).ToString() + "\n");
 
-            myGA.elitismWithRankingStep();
+            myGA.elitismStep();
             label2.Text = "elitismStep";
             for (int i = 0; i < myGA.elite.Count(); i++)
                 richTextBox2.AppendText(myGA.elite[i].value.ToString() + " " + Math.Round(myGA.elite[i].fitness, 2).ToString() + "\n");

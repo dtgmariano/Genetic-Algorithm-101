@@ -66,7 +66,7 @@
             // 
             // UpdateGraphTimer
             // 
-            this.UpdateGraphTimer.Tick += new System.EventHandler(this.UpdateGraphTimer_Tick);
+            //this.UpdateGraphTimer.Tick += new System.EventHandler(this.UpdateGraphTimer_Tick);
             // 
             // GenAlgTimer
             // 

@@ -305,9 +305,7 @@
             this.cbCrossover.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbCrossover.FormattingEnabled = true;
             this.cbCrossover.Items.AddRange(new object[] {
-            "Uniform",
-            "1 Point",
-            "2 Points"});
+            "1 Point"});
             this.cbCrossover.Location = new System.Drawing.Point(192, 106);
             this.cbCrossover.Name = "cbCrossover";
             this.cbCrossover.Size = new System.Drawing.Size(211, 33);
@@ -318,7 +316,7 @@
             this.cbMutation.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbMutation.FormattingEnabled = true;
             this.cbMutation.Items.AddRange(new object[] {
-            "Single gene"});
+            "Single bit"});
             this.cbMutation.Location = new System.Drawing.Point(192, 144);
             this.cbMutation.Name = "cbMutation";
             this.cbMutation.Size = new System.Drawing.Size(211, 33);
@@ -404,8 +402,8 @@
             this.cbOptimization.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbOptimization.FormattingEnabled = true;
             this.cbOptimization.Items.AddRange(new object[] {
-            "Minimum",
-            "Maximum"});
+            "Maximum",
+            "Minimum"});
             this.cbOptimization.Location = new System.Drawing.Point(192, 183);
             this.cbOptimization.Name = "cbOptimization";
             this.cbOptimization.Size = new System.Drawing.Size(211, 33);

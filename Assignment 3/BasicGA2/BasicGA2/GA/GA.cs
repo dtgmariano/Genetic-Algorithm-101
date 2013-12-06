@@ -13,16 +13,17 @@ namespace GA
         public int min, max, res;
         /*GA paremeters variables*/
         public int popsize, numgenerations, elitism_counter;
-        public bool ranking, elitism;
+        public bool hasRanking, hasElitism;
         public double probcrossover, probmutation;
         public int countcrossover, countmutation;
-        public int selectionMethod, crossoverMethod, optimizationMethod;
+        public int selectionMethod, crossoverMethod, mutationMethod, optimizationMethod;
 
         /*GA Lists variables*/
         public List<Chromossome> population;
         public List<Chromossome> elite;
         public List<Chromossome> parents;
         public List<Chromossome> offspring;
+        public List<Chromossome> mutant;
 
         public Chromossome champion;
 
@@ -48,30 +49,6 @@ namespace GA
         public GA(int _min, int _max, int _res,
             int _popsize, int _numgenerations, double _probcrossover, double _probmutation, 
             bool _ranking, bool _elitism, int _elitism_counter, 
-            int _selectionMethod, int _crossoverMethod, int _optimizationMethod, Random _random)
-        {
-            this.min = _min;
-            this.max = _max;
-            this.res = _res;
-
-            this.popsize = _popsize;
-            this.numgenerations = _numgenerations;
-            this.probcrossover = _probcrossover;
-            this.probmutation = _probmutation;
-
-            this.ranking = _ranking;
-            this.elitism = _elitism;
-            this.elitism_counter = _elitism_counter;
-
-            this.selectionMethod = _selectionMethod;
-            this.crossoverMethod = _crossoverMethod;
-            this.optimizationMethod = _optimizationMethod;
-            this.random = _random;
-        }
-
-        public GA(int _min, int _max, int _res,
-            int _popsize, int _numgenerations, double _probcrossover, double _probmutation, 
-            bool _ranking, bool _elitism, int _elitism_counter, 
             Random _random)
         {
             this.min = _min;
@@ -83,11 +60,49 @@ namespace GA
             this.probcrossover = _probcrossover;
             this.probmutation = _probmutation;
 
-            this.ranking = _ranking;
-            this.elitism = _elitism;
+            this.hasRanking = _ranking;
+            this.hasElitism = _elitism;
             this.elitism_counter = _elitism_counter;
 
             this.random = _random;
+        }
+
+        public GA(int _min, int _max, int _res, 
+            int _popsize, int _numgenerations, double _probcrossover, double _probmutation,
+            bool _ranking, bool _elitism, int _elitism_counter, 
+            int _selec_op, int _cross_op, int _mutan_op, int _optim_op,
+            Random _random)
+        {
+            this.min = _min;
+            this.max = _max;
+            this.res = _res;
+
+            this.popsize = _popsize;
+            this.numgenerations = _numgenerations;
+            this.probcrossover = _probcrossover;
+            this.probmutation = _probmutation;
+
+            this.hasRanking = _ranking;
+            this.hasElitism = _elitism;
+            this.elitism_counter = _elitism_counter;
+
+            this.selectionMethod = _selec_op;
+            this.crossoverMethod = _cross_op;
+            this.mutationMethod = _mutan_op;
+            this.optimizationMethod = _optim_op;
+
+            this.random = _random;
+        }
+
+        /*GA Processes*/
+        public void processesGA()
+        {
+            rankingStep();
+            elitismStep();
+            selectionStep();
+            crossoverStep();
+            mutationStep();
+            updateStep();
         }
 
         /*GA Steps*/
@@ -97,40 +112,118 @@ namespace GA
             elite = new List<Chromossome>();
             parents = new List<Chromossome>();
             offspring = new List<Chromossome>();
+            mutant = new List<Chromossome>();
 
             for (int i = 0; i < this.popsize; i++)
-                population.Add(new Chromossome(this.min, this.max, this.res, this.random));
+                population.Add(new Chromossome(this.min, this.max, this.res, this.optimizationMethod, this.random));
+        }
+
+        public void rankingStep()
+        {
+            if (hasRanking == true)
+                linearRanking(); 
         }
 
         public void elitismStep()
         {
-            List<Chromossome> candidates = new List<Chromossome>();
-            List<double> candidates_fitness = new List<double>();
-
-            for(int i=0; i<population.Count(); i++)
+            if (hasElitism == true)
             {
-                candidates.Add(population[i]);
-                candidates_fitness.Add(population[i].fitness);
+                if (hasRanking == true)
+                    rankingElitism();
+                else
+                    basicElitism();
             }
-
-            Array acandidates = candidates.ToArray();
-            Array acandidates_fitness = candidates_fitness.ToArray();
-            Array.Sort(acandidates_fitness, acandidates);
-
-            candidates = acandidates.OfType<Chromossome>().ToList();
-            //candidates_fitness = acandidates_fitness.OfType<double>().ToList();
-
-            candidates.Reverse();
-            //candidates_fitness.Reverse();
-
-            champion = candidates[0];
-
-            elite.Clear();
-            for (int i = 0; i < elitism_counter; i++)
-                elite.Add(candidates[i]);
         }
 
-        public void elitismWithRankingStep()
+        public void selectionStep()
+        {
+            switch (selectionMethod)
+            {
+                case 0:
+                    {
+                        roulette_wheel();
+                        break;
+                    }
+                case 1:
+                    {
+                        tournament(2);
+                        break;
+                    }
+                default:
+                    {
+                        roulette_wheel();
+                        break;
+                    }
+
+            }
+        }
+
+        public void crossoverStep()
+        {
+            this.countcrossover = 0;
+            switch (crossoverMethod)
+            {
+                case 0:
+                    {
+                        one_point();
+                        break;
+                    }
+                default:
+                    {
+                        one_point();
+                        break;
+                    }
+
+            }
+        }
+
+        public void mutationStep()
+        {
+            this.countmutation = 0;
+            singlebit();
+        }
+
+        public void updateStep()
+        {
+            population.Clear();
+            foreach (Chromossome c in mutant)
+                population.Add(c);
+            foreach (Chromossome c in elite)
+                population.Add(c);
+        }
+
+        /*Ranking Methods*/
+        public void linearRanking()
+        {
+            List<double> population_fitness = new List<double>();
+
+            for (int i = 0; i < population.Count(); i++)
+            {
+                population_fitness.Add(population[i].fitness);
+            }
+
+            Array apopulation = population.ToArray();
+            Array apopulation_fitness = population_fitness.ToArray();
+            Array.Sort(apopulation_fitness, apopulation);
+
+            population = apopulation.OfType<Chromossome>().ToList();
+            //candidates_fitness = acandidates_fitness.OfType<double>().ToList();
+
+            population.Reverse();
+            //candidates_fitness.Reverse();
+
+            elite.Clear();
+            int score = population.Count();
+
+            foreach (Chromossome c in population)
+            {
+                c.avaliationBasedOnRanking(score);
+                score--;
+            }
+        }
+
+        /*Elitism methods*/
+        public void basicElitism()
         {
             List<Chromossome> candidates = new List<Chromossome>();
             List<double> candidates_fitness = new List<double>();
@@ -151,56 +244,23 @@ namespace GA
             candidates.Reverse();
             //candidates_fitness.Reverse();
 
+            if (candidates[0].code == "")
+                Console.WriteLine("");
+
+            champion = candidates[0];
+
             elite.Clear();
-            int score = candidates.Count();
+            for (int i = 0; i < elitism_counter; i++)
+                elite.Add(candidates[i]);
+        }
 
-            foreach (Chromossome c in candidates)
-            {
-                c.avaliationBasedOnRanking(score);
-                score--;
-            }
-
-            population = candidates;
-
+        public void rankingElitism()
+        {
+            elite.Clear();
             for (int i = 0; i < elitism_counter; i++)
                 elite.Add(population[i]);
         }
-
-        public void selectionStep()
-        {
-            //roulette_wheel();
-            tournament(2);
-        }
-
-        public void crossoverStep()
-        {
-            this.countcrossover = 0;
-            one_point();
-        }
-
-        public void mutationStep()
-        {
-            this.countmutation = 0;
-            singlebit();
-        }
-
-        public void updateStep()
-        {
-            foreach (Chromossome c in elite)
-            {
-                population.Add(c);
-            }
-        }
-
-        public void processesGA()
-        {
-            elitismStep();
-            selectionStep();
-            crossoverStep();
-            mutationStep();
-            updateStep();
-        }
-
+        
         /*Selection methods*/
         public void roulette_wheel()
         {
@@ -244,36 +304,24 @@ namespace GA
 
         public void tournament(int n)
         {
-            List<int> players_index = new List<int>();
-            List<double> players_fitness = new List<double>();
-
-            this.parents.Clear();
+            List<Chromossome> players = new List<Chromossome>();
             int dice;
 
             if (n <= 1)
                 n = 2;
 
+            this.parents.Clear();
+
             for (int i = 0; i < (this.popsize - this.elitism_counter); i++)
             {
                 //Select players
-                players_index.Clear();
-                players_fitness.Clear();
-
+                players.Clear();
                 for (int j = 0; j < n; j++)
                 {
                     dice = this.random.Next(0,this.population.Count());
-                    players_index.Add(dice);
-                    players_fitness.Add(population[dice].fitness);
+                    players.Add(population[dice]);
                 }
-
-                Array aplayers_index = players_index.ToArray();
-                Array aplayers_fitness = players_fitness.ToArray();
-                Array.Sort(aplayers_fitness, aplayers_index);
-                players_index = aplayers_index.OfType<int>().ToList();
-                //players_fitness = aplayers_fitness.OfType<double>().ToList();
-                players_index.Reverse();
-                //players_fitness.Reverse();
-                this.parents.Add(population[players_index[0]]);
+                this.parents.Add(getChampion(players));
             }
         }
 
@@ -295,12 +343,12 @@ namespace GA
                     {
                         this.countcrossover++;
                         crossoverpoint = random.Next(0, size);
-                        genes_offspring1 =  (parents[(i * 2)    ].code).Substring(0, crossoverpoint);
-                        genes_offspring2 =  (parents[(i * 2) + 1].code).Substring(0, crossoverpoint);
-                        genes_offspring1 += (parents[(i * 2) + 1].code).Substring(crossoverpoint, size - crossoverpoint);
-                        genes_offspring2 += (parents[(i * 2)    ].code).Substring(crossoverpoint, size - crossoverpoint);
-                        offspring.Add(new Chromossome(genes_offspring1, this.min, this.max, this.res, this.random));
-                        offspring.Add(new Chromossome(genes_offspring2, this.min, this.max, this.res, this.random));
+                        genes_offspring1 =  ((parents[(i * 2)    ]).code).Substring(0, crossoverpoint);
+                        genes_offspring2 =  ((parents[(i * 2) + 1]).code).Substring(0, crossoverpoint);
+                        genes_offspring1 += ((parents[(i * 2) + 1]).code).Substring(crossoverpoint, size - crossoverpoint);
+                        genes_offspring2 += ((parents[(i * 2)    ]).code).Substring(crossoverpoint, size - crossoverpoint);
+                        offspring.Add(new Chromossome(genes_offspring1, this.min, this.max, this.res, this.optimizationMethod, this.random));
+                        offspring.Add(new Chromossome(genes_offspring2, this.min, this.max, this.res, this.optimizationMethod, this.random));
                     }
                     else
                     {
@@ -318,12 +366,12 @@ namespace GA
                     {
                         this.countcrossover++;
                         crossoverpoint = this.random.Next(0, size);
-                        genes_offspring1 = (parents[(i * 2)].code).Substring(0, crossoverpoint);
-                        genes_offspring2 = (parents[(i * 2) + 1].code).Substring(0, crossoverpoint);
-                        genes_offspring1 += (parents[(i * 2) + 1].code).Substring(crossoverpoint, size - crossoverpoint);
-                        genes_offspring2 += (parents[(i * 2)].code).Substring(crossoverpoint, size - crossoverpoint);
-                        offspring.Add(new Chromossome(genes_offspring1, this.min, this.max, this.res, this.random));
-                        offspring.Add(new Chromossome(genes_offspring2, this.min, this.max, this.res, this.random));
+                        genes_offspring1 = ((parents[(i * 2)]).code).Substring(0, crossoverpoint);
+                        genes_offspring2 = ((parents[(i * 2) + 1]).code).Substring(0, crossoverpoint);
+                        genes_offspring1 += ((parents[(i * 2) + 1]).code).Substring(crossoverpoint, size - crossoverpoint);
+                        genes_offspring2 += ((parents[(i * 2)]).code).Substring(crossoverpoint, size - crossoverpoint);
+                        offspring.Add(new Chromossome(genes_offspring1, this.min, this.max, this.res, this.optimizationMethod, this.random));
+                        offspring.Add(new Chromossome(genes_offspring2, this.min, this.max, this.res, this.optimizationMethod, this.random));
                     }
                     else
                     {
@@ -343,7 +391,7 @@ namespace GA
             int size = population[0].nbits;;
             string genes_mutant = "";
 
-            population.Clear();
+            mutant.Clear();
 
             foreach (Chromossome c in offspring)
             {
@@ -358,11 +406,17 @@ namespace GA
                         genes_mutant += '1';
                         genes_mutant += (c.code).Substring(mutationpoint + 1);
                     }
-                    population.Add(new Chromossome(genes_mutant,this.min,this.max,this.res,this.random));
+                    else
+                    {
+                        genes_mutant = (c.code).Substring(0, mutationpoint);
+                        genes_mutant += '0';
+                        genes_mutant += (c.code).Substring(mutationpoint + 1);
+                    }
+                    mutant.Add(new Chromossome(genes_mutant, this.min, this.max, this.res, this.optimizationMethod, this.random));
                 }
                 else
                 {
-                    population.Add(c);
+                    mutant.Add(c);
                 }
                 
             }
@@ -436,6 +490,28 @@ namespace GA
             return champ;
         }
 
-    
+        public Chromossome getChampion(List<Chromossome> _population)
+        {
+            Chromossome champ;
+
+            List<Chromossome> candidates = new List<Chromossome>();
+            List<double> candidates_fitness = new List<double>();
+
+            for (int i = 0; i < _population.Count(); i++)
+            {
+                candidates.Add(_population[i]);
+                candidates_fitness.Add(_population[i].fitness);
+            }
+
+            Array acandidates = candidates.ToArray();
+            Array acandidates_fitness = candidates_fitness.ToArray();
+            Array.Sort(acandidates_fitness, acandidates);
+
+            candidates = acandidates.OfType<Chromossome>().ToList();
+            candidates.Reverse();
+            champ = candidates[0];
+
+            return champ;
+        }
     }
 }
