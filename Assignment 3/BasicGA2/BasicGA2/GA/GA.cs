@@ -295,6 +295,7 @@ namespace GA
                     {
                         this.countcrossover++;
                         crossoverpoint = random.Next(0, size);
+                        //crossoverpoint = 0;
                         genes_offspring1 =  (parents[(i * 2)    ].code).Substring(0, crossoverpoint);
                         genes_offspring2 =  (parents[(i * 2) + 1].code).Substring(0, crossoverpoint);
                         genes_offspring1 += (parents[(i * 2) + 1].code).Substring(crossoverpoint, size - crossoverpoint);
