@@ -22,8 +22,9 @@ namespace GA
         int min, max, res;
         int popsize, numgenerations; 
         double probcrossover, probmutation;
-        bool hasranking, haselitism; 
-        int elitism_counter, selec_op, cross_op, mutant_op, optim_op;
+        bool hasranking, haselitism;
+        double elitism_percent;
+        int selec_op, cross_op, mutant_op, optim_op;
         Random random;
 
         /*Timer Process Variables*/
@@ -33,7 +34,7 @@ namespace GA
         /*Constructor*/
         public Statistics_View(int _min, int _max, int _res, 
             int _popsize, int _numgenerations, double _probcrossover, double _probmutation,
-            bool _hasranking, bool _haselitism, int _elitism_counter, 
+            bool _hasranking, bool _haselitism, double _elitism_percent, 
             int _selec_op, int _cross_op, int _mutant_op, int _optim_op)
         {
             InitializeComponent();
@@ -46,7 +47,7 @@ namespace GA
             probmutation = _probmutation;
             hasranking = _hasranking; 
             haselitism = _haselitism;
-            elitism_counter = _elitism_counter; 
+            elitism_percent = _elitism_percent; 
             selec_op = _selec_op; 
             cross_op = _cross_op; 
             mutant_op = _mutant_op; 
@@ -66,7 +67,7 @@ namespace GA
             {
                 myGA = new GA(min, max, res,
                 popsize, numgenerations, probcrossover, probmutation,
-                hasranking, haselitism, elitism_counter,
+                hasranking, haselitism, elitism_percent,
                 selec_op, cross_op, mutant_op, optim_op, random);
 
                 myGA.beginStep();
@@ -94,7 +95,7 @@ namespace GA
                 xlApp = new Excel.Application();
                 xlWorkBook = xlApp.Workbooks.Add(misValue);
 
-                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(2);
+                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
                 xlWorkSheet.Cells[1, 1] = "Round";
                 xlWorkSheet.Cells[1, 2] = "PS";

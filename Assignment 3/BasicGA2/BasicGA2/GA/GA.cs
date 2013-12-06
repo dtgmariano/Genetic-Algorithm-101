@@ -13,6 +13,7 @@ namespace GA
         public int min, max, res;
         /*GA paremeters variables*/
         public int popsize, numgenerations, elitism_counter;
+        public double elitism_percentage;
         public bool hasRanking, hasElitism;
         public double probcrossover, probmutation;
         public int countcrossover, countmutation;
@@ -46,8 +47,8 @@ namespace GA
         }
 
         public GA(int _min, int _max, int _res,
-            int _popsize, int _numgenerations, double _probcrossover, double _probmutation, 
-            bool _ranking, bool _elitism, int _elitism_counter, 
+            int _popsize, int _numgenerations, double _probcrossover, double _probmutation,
+            bool _ranking, bool _elitism, double _elitism_percentage, 
             Random _random)
         {
             this.min = _min;
@@ -61,14 +62,15 @@ namespace GA
 
             this.hasRanking = _ranking;
             this.hasElitism = _elitism;
-            this.elitism_counter = _elitism_counter;
+            this.elitism_percentage = _elitism_percentage;
+            this.elitism_counter = Convert.ToInt32(Convert.ToDouble(this.popsize) * this.elitism_percentage);
 
             this.random = _random;
         }
 
         public GA(int _min, int _max, int _res, 
             int _popsize, int _numgenerations, double _probcrossover, double _probmutation,
-            bool _ranking, bool _elitism, int _elitism_counter, 
+            bool _ranking, bool _elitism, double _elitism_percentage, 
             int _selec_op, int _cross_op, int _mutan_op, int _optim_op,
             Random _random)
         {
@@ -83,7 +85,8 @@ namespace GA
 
             this.hasRanking = _ranking;
             this.hasElitism = _elitism;
-            this.elitism_counter = _elitism_counter;
+            this.elitism_percentage = _elitism_percentage;
+            this.elitism_counter = Convert.ToInt32(Convert.ToDouble(this.popsize) * this.elitism_percentage);
 
             this.selectionMethod = _selec_op;
             this.crossoverMethod = _cross_op;

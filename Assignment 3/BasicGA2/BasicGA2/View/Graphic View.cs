@@ -38,13 +38,13 @@ namespace GA
 
         public Graphic_View(int _min, int _max, int _res, 
             int _popsize, int _numgenerations, double _probcrossover, double _probmutation,
-            bool _hasranking, bool _haselitism, int _elitism_counter, 
+            bool _hasranking, bool _haselitism, double _elitism_perc, 
             int _selec_op, int _cross_op, int _mutant_op, int _optim_op)
         {
             InitializeComponent();
             myGA = new GA(_min, _max, _res,
                 _popsize, _numgenerations, _probcrossover, _probmutation,
-                _hasranking, _haselitism, _elitism_counter,
+                _hasranking, _haselitism, _elitism_perc,
                 _selec_op, _cross_op, _mutant_op, _optim_op, random);
 
             setGraphSettings();
@@ -113,8 +113,22 @@ namespace GA
 
         private void Go()
         {
+            
+            rtbInfo.AppendText("Chromossome parameters\n");
+            rtbInfo.AppendText("Minimum: " + myGA.min + "\n");
+            rtbInfo.AppendText("Maximum: " + myGA.max + "\n");
+            rtbInfo.AppendText("Resolution: " + myGA.res + "\n\n");
+
+            rtbInfo.AppendText("GA parameters\n");
+            rtbInfo.AppendText("Population size: " + myGA.probcrossover + "\n");
+            rtbInfo.AppendText("Number of generations: " + myGA.numgenerations + "\n");
+            rtbInfo.AppendText("Probability of crossover: " + myGA.probcrossover + "\n");
+            rtbInfo.AppendText("Probability of mutation: " + myGA.probmutation + "\n");
+            rtbInfo.AppendText("Elitism: " + myGA.hasElitism + " Counter: " + myGA.elitism_counter + "\n\n");
+
+            rtbInfo.AppendText("Beginning GA!\n");
+
             myGA.beginStep();
-            rtbInfo.AppendText("GA parameters per generation\n");
 
             GAPointsRPPL.Clear();
             for (int i = 0; i < myGA.popsize; i++)
