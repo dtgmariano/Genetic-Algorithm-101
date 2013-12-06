@@ -343,28 +343,12 @@ namespace GA
                     {
                         this.countcrossover++;
                         crossoverpoint = random.Next(0, size);
-<<<<<<< HEAD
-<<<<<<< HEAD
-                        //crossoverpoint = 0;
-                        genes_offspring1 =  (parents[(i * 2)    ].code).Substring(0, crossoverpoint);
-                        genes_offspring2 =  (parents[(i * 2) + 1].code).Substring(0, crossoverpoint);
-                        genes_offspring1 += (parents[(i * 2) + 1].code).Substring(crossoverpoint, size - crossoverpoint);
-                        genes_offspring2 += (parents[(i * 2)    ].code).Substring(crossoverpoint, size - crossoverpoint);
-                        offspring.Add(new Chromossome(genes_offspring1, this.min, this.max, this.res, this.random));
-                        offspring.Add(new Chromossome(genes_offspring2, this.min, this.max, this.res, this.random));
-=======
-=======
->>>>>>> 7fc6ac8296244bc1930bb8f8a9e5bb1b02a97325
                         genes_offspring1 =  ((parents[(i * 2)    ]).code).Substring(0, crossoverpoint);
                         genes_offspring2 =  ((parents[(i * 2) + 1]).code).Substring(0, crossoverpoint);
                         genes_offspring1 += ((parents[(i * 2) + 1]).code).Substring(crossoverpoint, size - crossoverpoint);
                         genes_offspring2 += ((parents[(i * 2)    ]).code).Substring(crossoverpoint, size - crossoverpoint);
                         offspring.Add(new Chromossome(genes_offspring1, this.min, this.max, this.res, this.optimizationMethod, this.random));
                         offspring.Add(new Chromossome(genes_offspring2, this.min, this.max, this.res, this.optimizationMethod, this.random));
-<<<<<<< HEAD
->>>>>>> 7fc6ac8296244bc1930bb8f8a9e5bb1b02a97325
-=======
->>>>>>> 7fc6ac8296244bc1930bb8f8a9e5bb1b02a97325
                     }
                     else
                     {

@@ -99,7 +99,7 @@ namespace GA
                 champfvalue.Add(Equation.Fx(champion.value));
                 avg.Add(myGA.getAverageValue());
 
-                stddeviation.Add(Statistics.StandardDeviation(values));
+                //stddeviation.Add(Statistics.StandardDeviation(values));
 
                 rtbInfo.AppendText(Math.Round(champvalue[i], 3) + "\t" + Math.Round(champfvalue[i], 3) + "\n");
             }
@@ -107,61 +107,61 @@ namespace GA
 
         private void btSave_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Excel.Application xlApp;
-                Excel.Workbook xlWorkBook;
-                Excel.Worksheet xlWorkSheet;
-                object misValue = System.Reflection.Missing.Value;
+            //try
+            //{
+            //    Excel.Application xlApp;
+            //    Excel.Workbook xlWorkBook;
+            //    Excel.Worksheet xlWorkSheet;
+            //    object misValue = System.Reflection.Missing.Value;
 
-                xlApp = new Excel.Application();
-                xlWorkBook = xlApp.Workbooks.Add(misValue);
+            //    xlApp = new Excel.Application();
+            //    xlWorkBook = xlApp.Workbooks.Add(misValue);
 
-                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            //    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-                xlWorkSheet.Cells[1, 1] = "PS";
-                xlWorkSheet.Cells[1, 2] = "NG";
-                xlWorkSheet.Cells[1, 3] = "Pc";
-                xlWorkSheet.Cells[1, 4] = "Pm";
-                xlWorkSheet.Cells[1, 5] = "Xbest";
-                xlWorkSheet.Cells[1, 6] = "f(Xbest)";
-                xlWorkSheet.Cells[1, 7] = "StdDev";
-                xlWorkSheet.Cells[1, 8] = "Avg";
+            //    xlWorkSheet.Cells[1, 1] = "PS";
+            //    xlWorkSheet.Cells[1, 2] = "NG";
+            //    xlWorkSheet.Cells[1, 3] = "Pc";
+            //    xlWorkSheet.Cells[1, 4] = "Pm";
+            //    xlWorkSheet.Cells[1, 5] = "Xbest";
+            //    xlWorkSheet.Cells[1, 6] = "f(Xbest)";
+            //    xlWorkSheet.Cells[1, 7] = "StdDev";
+            //    xlWorkSheet.Cells[1, 8] = "Avg";
 
-                for (int i = 0; i < champvalue.Count(); i++)
-                {
-                    xlWorkSheet.Cells[(i + 2), 1] = myGA.populationSize;
-                    xlWorkSheet.Cells[(i + 2), 2] = myGA.numberGenerations;
-                    xlWorkSheet.Cells[(i + 2), 3] = myGA.probabilityCrossover;
-                    xlWorkSheet.Cells[(i + 2), 4] = myGA.probabilityMutation;
+            //    for (int i = 0; i < champvalue.Count(); i++)
+            //    {
+            //        xlWorkSheet.Cells[(i + 2), 1] = myGA.populationSize;
+            //        xlWorkSheet.Cells[(i + 2), 2] = myGA.numberGenerations;
+            //        xlWorkSheet.Cells[(i + 2), 3] = myGA.probabilityCrossover;
+            //        xlWorkSheet.Cells[(i + 2), 4] = myGA.probabilityMutation;
 
-                    xlWorkSheet.Cells[(i + 2), 5] = champvalue[i];
-                    xlWorkSheet.Cells[(i + 2), 6] = champfvalue[i];
-                    xlWorkSheet.Cells[(i + 2), 7] = stddeviation[i];
-                    xlWorkSheet.Cells[(i + 2), 8] = avg[i];
-                }
+            //        xlWorkSheet.Cells[(i + 2), 5] = champvalue[i];
+            //        xlWorkSheet.Cells[(i + 2), 6] = champfvalue[i];
+            //        xlWorkSheet.Cells[(i + 2), 7] = stddeviation[i];
+            //        xlWorkSheet.Cells[(i + 2), 8] = avg[i];
+            //    }
 
-                xlWorkSheet.Cells[1, 10] = "Best Result";
-                xlWorkSheet.Cells[1, 11] = "";
-                xlWorkSheet.Cells[2, 10] = "X";
-                xlWorkSheet.Cells[2, 11] = "f(Xbest)";
-                xlWorkSheet.Cells[3, 10] = GetTheBestChromossome(champvalue);
-                xlWorkSheet.Cells[3, 11] = Equation.set(myGA.functionType, GetTheBestChromossome(champvalue));
+            //    xlWorkSheet.Cells[1, 10] = "Best Result";
+            //    xlWorkSheet.Cells[1, 11] = "";
+            //    xlWorkSheet.Cells[2, 10] = "X";
+            //    xlWorkSheet.Cells[2, 11] = "f(Xbest)";
+            //    xlWorkSheet.Cells[3, 10] = GetTheBestChromossome(champvalue);
+            //    xlWorkSheet.Cells[3, 11] = Equation.set(myGA.functionType, GetTheBestChromossome(champvalue));
 
-                xlWorkBook.SaveAs(tbFileName.Text, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlWorkBook.Close(true, misValue, misValue);
-                xlApp.Quit();
+            //    xlWorkBook.SaveAs(tbFileName.Text, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            //    xlWorkBook.Close(true, misValue, misValue);
+            //    xlApp.Quit();
 
-                liberarObjetos(xlWorkSheet);
-                liberarObjetos(xlWorkBook);
-                liberarObjetos(xlApp);
+            //    liberarObjetos(xlWorkSheet);
+            //    liberarObjetos(xlWorkBook);
+            //    liberarObjetos(xlApp);
 
-                MessageBox.Show("O arquivo Excel foi criado com sucesso. Você pode encontrá-lo em : " + tbFileName.Text);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro : " + ex.Message);
-            }
+            //    MessageBox.Show("O arquivo Excel foi criado com sucesso. Você pode encontrá-lo em : " + tbFileName.Text);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Erro : " + ex.Message);
+            //}
         }
 
         private void liberarObjetos(object obj)
