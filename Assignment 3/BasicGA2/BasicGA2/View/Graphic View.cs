@@ -27,7 +27,7 @@ namespace GA
         //GeneticAlgorithm myGA;
         GA myGA;
 
-        Chromossome champion;
+        //Chromossome champion;
         double avgResponse;
 
         /*Timer Process Variables*/
@@ -118,14 +118,13 @@ namespace GA
 
             GAPointsRPPL.Clear();
             for (int i = 0; i < myGA.popsize; i++)
-                GAPointsRPPL.Add(myGA.population[i].value, Equation.Fx(myGA.population[i].value));
+                GAPointsRPPL.Add(myGA.population[i].x, Equation.Fx(myGA.population[i].x));
 
-            champion = myGA.getChampion();
             avgResponse = myGA.getAverageResponse();
 
             PCavgPointsRPPL.Add(nog_count, avgResponse);
-            PCmaxPointsRPPL.Add(nog_count, Equation.Fx(champion.value));
-            rtbInfo.AppendText("Gen.: " + (nog_count + 1) + " Best: " + Math.Round(champion.value, 2) + " F(x): " + Math.Round(Equation.Fx(champion.value), 2) + "\n");
+            PCmaxPointsRPPL.Add(nog_count, myGA.champion.fx);
+            rtbInfo.AppendText("Gen.: " + (nog_count + 1) + " Best: " + Math.Round(myGA.champion.x, 2) + " F(x): " + Math.Round(myGA.champion.fx, 2) + "\n");
 
             zgcFunction.Invalidate();
             zgcPerformance.Invalidate();
@@ -142,14 +141,13 @@ namespace GA
 
             GAPointsRPPL.Clear();
             for (int i = 0; i < myGA.popsize; i++)
-                GAPointsRPPL.Add(myGA.population[i].value, Equation.Fx(myGA.population[i].value));
+                GAPointsRPPL.Add(myGA.population[i].x, Equation.Fx(myGA.population[i].x));
 
-            champion = myGA.getChampion();
             avgResponse = myGA.getAverageResponse();
 
             PCavgPointsRPPL.Add(nog_count, avgResponse);
-            PCmaxPointsRPPL.Add(nog_count, Equation.Fx(champion.value));
-            rtbInfo.AppendText("Gen.: " + (nog_count + 1) + " Best: " + Math.Round(champion.value, 2) + " F(x): " + Math.Round(Equation.Fx(champion.value), 2) + "\n");
+            PCmaxPointsRPPL.Add(nog_count, myGA.champion.fx);
+            rtbInfo.AppendText("Gen.: " + (nog_count + 1) + " Best: " + Math.Round(myGA.champion.x, 2) + " F(x): " + Math.Round(myGA.champion.fx, 2) + "\n");
 
             zgcFunction.Invalidate();
             zgcPerformance.Invalidate();

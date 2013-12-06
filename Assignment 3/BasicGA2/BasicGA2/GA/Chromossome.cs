@@ -9,7 +9,7 @@ namespace GA
     {
         public int min, max, res, nbits;
         public string code;
-        public double value, fitness;
+        public double x, fx, fitness;
         private int optimization;
 
         Random random;
@@ -23,9 +23,10 @@ namespace GA
             this.res = _res;
             this.nbits = Convert.ToInt32(Math.Ceiling(Math.Log((this.max - this.min), 2))) + this.res;
             this.code = BinaryOperators.GeneratesBinaryString(this.random, this.nbits);
-            this.value = BinaryOperators.BinaryStringToDecimal(this.code);
+            this.x = BinaryOperators.BinaryStringToDecimal(this.code);
+            this.fx = Equation.Fx(x);
             this.optimization = _optimization;
-            avaliationBasedOnFunction(this.value);
+            avaliationBasedOnFunction();
         }
 
         /*Constructor for offspring chromossomes*/
@@ -37,24 +38,25 @@ namespace GA
             this.res = _res;
             this.nbits = Convert.ToInt32(Math.Ceiling(Math.Log((this.max - this.min), 2))) + this.res;
             this.code = _code;
-            this.value = BinaryOperators.BinaryStringToDecimal(this.code);
+            this.x = BinaryOperators.BinaryStringToDecimal(this.code);
+            this.fx = Equation.Fx(x);
             this.optimization = _optimization;
-            avaliationBasedOnFunction(this.value);
+            avaliationBasedOnFunction();
         }
 
         /*Avaliation methods*/
-        public void avaliationBasedOnFunction(double _value)
+        public void avaliationBasedOnFunction()
         {
             switch (this.optimization)            
             {
                 case 0:
                     {
-                        this.fitness = Equation.Fx(_value);
+                        this.fitness = this.fx;
                         break;
                     }
                 case 1:
                     {
-                        this.fitness = -Equation.Fx(_value);
+                        this.fitness = -this.fx;
                         break;
                     }
             }

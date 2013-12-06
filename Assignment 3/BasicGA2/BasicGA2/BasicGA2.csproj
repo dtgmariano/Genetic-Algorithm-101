@@ -55,6 +55,7 @@
     <Compile Include="GA\Chromossome.cs" />
     <Compile Include="GA\Equation.cs" />
     <Compile Include="GA\GA.cs" />
+    <Compile Include="GA\Statistics.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Foreign Classes\Statistics.cs" />
