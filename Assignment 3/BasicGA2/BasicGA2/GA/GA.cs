@@ -152,7 +152,7 @@ namespace GA
                     }
                 case 1:
                     {
-                        tournament(2);
+                        tournament(3);
                         break;
                     }
                 default:

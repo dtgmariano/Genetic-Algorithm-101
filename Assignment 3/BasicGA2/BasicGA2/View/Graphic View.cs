@@ -73,8 +73,8 @@ namespace GA
             zgcFunction.GraphPane.XAxis.Scale.MaxAuto = true;
             zgcFunction.GraphPane.XAxis.Scale.MinorStep = 1;
             zgcFunction.GraphPane.XAxis.Scale.MajorStep = 100;
-            zgcFunction.GraphPane.YAxis.Scale.Min = -Convert.ToDouble(myGA.max) + 50;
-            zgcFunction.GraphPane.YAxis.Scale.Max = Convert.ToDouble(myGA.max) + 50;
+            zgcFunction.GraphPane.YAxis.Scale.Min = - Equation.Fx(myGA.max) - 50;
+            zgcFunction.GraphPane.YAxis.Scale.Max = Equation.Fx(myGA.max)+50;
             zgcFunction.GraphPane.YAxis.Scale.MinorStep = 25;
             zgcFunction.GraphPane.YAxis.Scale.MajorStep = 100;
 
@@ -88,11 +88,12 @@ namespace GA
             zgcPerformance.GraphPane.XAxis.Scale.MaxAuto = true;
             zgcPerformance.GraphPane.XAxis.Scale.MinorStep = 1;
             zgcPerformance.GraphPane.XAxis.Scale.MajorStep = 5;
-            zgcPerformance.GraphPane.YAxis.Scale.Min = -Convert.ToDouble(myGA.max) - 20;
+            zgcPerformance.GraphPane.YAxis.Scale.Min = - 50;
             zgcPerformance.GraphPane.YAxis.Scale.Max = Convert.ToDouble(myGA.max) + 20;
             zgcPerformance.GraphPane.YAxis.Scale.MinorStep = 25;
             zgcPerformance.GraphPane.YAxis.Scale.MajorStep = 100;
         }
+
 
         /*Creates the curve for the equation type 1*/
         public void setGraphFunction()
@@ -113,7 +114,6 @@ namespace GA
 
         private void Go()
         {
-            
             rtbInfo.AppendText("Chromossome parameters\n");
             rtbInfo.AppendText("Minimum: " + myGA.min + "\n");
             rtbInfo.AppendText("Maximum: " + myGA.max + "\n");

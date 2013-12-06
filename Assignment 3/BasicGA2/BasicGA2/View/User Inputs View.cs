@@ -24,13 +24,14 @@ namespace GA
 
         private void setInitialParameters()
         {
-            numPS.Value = 50;
+            numPS.Value = 20;
             numNG.Value = 20;
             tbPc.Value = 60;
             tbPm.Value = 1;
             numRMin.Value = 0;
             numRMax.Value = 512;
             tbRes.Value = 0;
+            tbElitism.Value = 0;
             cbSelection.SelectedIndex = 0;
             cbCrossover.SelectedIndex = 0;
             cbMutation.SelectedIndex = 0;
