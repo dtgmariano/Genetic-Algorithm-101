@@ -14,24 +14,39 @@ namespace GA
 {
     public partial class Statistics_View : Form
     {
-        Random random = new Random();
         GA myGA;
+        Chromossome champion;
 
-        List<double> column1;
-        List<double> column2;
+        List<double> champvalue;
+        List<double> champfvalue;
         List<double> stddeviation;
         List<double> avg;
 
-        int ps; int ng; int pc; int pm; int rmin; int rmax; int gran; int selec_op; int cross_op; int optim_op;
+        int min, max, res;
+        int popsize, _numgenerations; 
+        double probcrossover, probmutation;
+        bool hasranking, haselitism; 
+        int elitism_counter, selec_op, cross_op, mutant_op, optim_op;
+        Random random;
+
         /*Timer Process Variables*/
         bool startGA_flag = false;
         int nog_count;
 
-        double champ;
+        
 
         public Statistics_View()
         {
             InitializeComponent();
+        }
+
+        public Statistics_View(int _min, int _max, int _res, 
+            int _popsize, int _numgenerations, double _probcrossover, double _probmutation,
+            bool _hasranking, bool _haselitism, int _elitism_counter, 
+            int _selec_op, int _cross_op, int _mutant_op, int _optim_op)
+        {
+            InitializeComponent();
+            random = new Random();
         }
 
         ///*Overrided Constructor*/
@@ -53,156 +68,119 @@ namespace GA
         //}
 
         private void btGo_Click(object sender, EventArgs e)
-        { }
+        { 
+            
+           
+            rtbInfo.Clear();
+
+
+            champvalue = new List<double>();
+            champfvalue = new List<double>();
+            stddeviation = new List<double>();
+            avg = new List<double>();
+
+            for (int i = 0; i < numRounds.Value; i++)
+            {
+                myGA = new GA(min, max, res,
+                popsize, _numgenerations, probcrossover, probmutation,
+                hasranking, haselitism, elitism_counter,
+                selec_op, cross_op, mutant_op, optim_op, random);
+
+                myGA.beginStep();
+
+                for (int j = 1; j < myGA.numgenerations; j++)
+                {
+                    myGA.processesGA();
+                }
+
+                champion = myGA.getChampion();
+
+                champvalue.Add(champion.value);
+                champfvalue.Add(Equation.Fx(champion.value));
+                avg.Add(myGA.getAverageValue());
+
+                stddeviation.Add(Statistics.StandardDeviation(values));
+
+                rtbInfo.AppendText(Math.Round(champvalue[i], 3) + "\t" + Math.Round(champfvalue[i], 3) + "\n");
+            }
+        }
 
         private void btSave_Click(object sender, EventArgs e)
-        { }
-        //private void btGo_Click(object sender, EventArgs e)
-        //{
-        //    rtbInfo.Clear();
+        {
+            try
+            {
+                Excel.Application xlApp;
+                Excel.Workbook xlWorkBook;
+                Excel.Worksheet xlWorkSheet;
+                object misValue = System.Reflection.Missing.Value;
 
+                xlApp = new Excel.Application();
+                xlWorkBook = xlApp.Workbooks.Add(misValue);
 
-        //    column1 = new List<double>();
-        //    column2 = new List<double>();
-        //    stddeviation = new List<double>();
-        //    avg = new List<double>();
+                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
 
-        //    for (int i = 0; i < numRounds.Value; i++)
-        //    {
-        //        myGA = new GeneticAlgorithm(rmin, rmax, gran, ps, ng, pc, pm, selec_op, cross_op, 2, optim_op, random);
+                xlWorkSheet.Cells[1, 1] = "PS";
+                xlWorkSheet.Cells[1, 2] = "NG";
+                xlWorkSheet.Cells[1, 3] = "Pc";
+                xlWorkSheet.Cells[1, 4] = "Pm";
+                xlWorkSheet.Cells[1, 5] = "Xbest";
+                xlWorkSheet.Cells[1, 6] = "f(Xbest)";
+                xlWorkSheet.Cells[1, 7] = "StdDev";
+                xlWorkSheet.Cells[1, 8] = "Avg";
 
-        //        myGA.StartsPopulation();
-        //        myGA.SelectParents();
-        //        myGA.Reproduction();
+                for (int i = 0; i < champvalue.Count(); i++)
+                {
+                    xlWorkSheet.Cells[(i + 2), 1] = myGA.populationSize;
+                    xlWorkSheet.Cells[(i + 2), 2] = myGA.numberGenerations;
+                    xlWorkSheet.Cells[(i + 2), 3] = myGA.probabilityCrossover;
+                    xlWorkSheet.Cells[(i + 2), 4] = myGA.probabilityMutation;
 
-        //        for (int j = 1; j < myGA.numberGenerations; j++)
-        //        {
-        //            myGA.SelectParents();
-        //            myGA.Reproduction();
-        //        }
+                    xlWorkSheet.Cells[(i + 2), 5] = champvalue[i];
+                    xlWorkSheet.Cells[(i + 2), 6] = champfvalue[i];
+                    xlWorkSheet.Cells[(i + 2), 7] = stddeviation[i];
+                    xlWorkSheet.Cells[(i + 2), 8] = avg[i];
+                }
 
-        //        champ = GetTheBestChromossome(myGA.chromoValue);
-        //        column1.Add(champ);
-        //        column2.Add(Equation.set(myGA.functionType, champ));
-        //        double[] values = new double[50];
-        //        values = myGA.chromoValue.ToArray();
-        //        avg.Add(Statistics.Mean(values));
-        //        stddeviation.Add(Statistics.StandardDeviation(values));
-        //        rtbInfo.AppendText(Math.Round(column1[i], 3) + "\t" + Math.Round(column2[i], 3) + "\n");
-        //    }
-        //}
+                xlWorkSheet.Cells[1, 10] = "Best Result";
+                xlWorkSheet.Cells[1, 11] = "";
+                xlWorkSheet.Cells[2, 10] = "X";
+                xlWorkSheet.Cells[2, 11] = "f(Xbest)";
+                xlWorkSheet.Cells[3, 10] = GetTheBestChromossome(champvalue);
+                xlWorkSheet.Cells[3, 11] = Equation.set(myGA.functionType, GetTheBestChromossome(champvalue));
 
-        //private void btSave_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        Excel.Application xlApp;
-        //        Excel.Workbook xlWorkBook;
-        //        Excel.Worksheet xlWorkSheet;
-        //        object misValue = System.Reflection.Missing.Value;
+                xlWorkBook.SaveAs(tbFileName.Text, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                xlWorkBook.Close(true, misValue, misValue);
+                xlApp.Quit();
 
-        //        xlApp = new Excel.Application();
-        //        xlWorkBook = xlApp.Workbooks.Add(misValue);
+                liberarObjetos(xlWorkSheet);
+                liberarObjetos(xlWorkBook);
+                liberarObjetos(xlApp);
 
-        //        xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                MessageBox.Show("O arquivo Excel foi criado com sucesso. Você pode encontrá-lo em : " + tbFileName.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro : " + ex.Message);
+            }
+        }
 
-        //        xlWorkSheet.Cells[1, 1] = "PS";
-        //        xlWorkSheet.Cells[1, 2] = "NG";
-        //        xlWorkSheet.Cells[1, 3] = "Pc";
-        //        xlWorkSheet.Cells[1, 4] = "Pm";
-        //        xlWorkSheet.Cells[1, 5] = "Xbest";
-        //        xlWorkSheet.Cells[1, 6] = "f(Xbest)";
-        //        xlWorkSheet.Cells[1, 7] = "StdDev";
-        //        xlWorkSheet.Cells[1, 8] = "Avg";
-
-        //        for (int i = 0; i < column1.Count(); i++)
-        //        {
-        //            xlWorkSheet.Cells[(i + 2), 1] = myGA.populationSize;
-        //            xlWorkSheet.Cells[(i + 2), 2] = myGA.numberGenerations;
-        //            xlWorkSheet.Cells[(i + 2), 3] = myGA.probabilityCrossover;
-        //            xlWorkSheet.Cells[(i + 2), 4] = myGA.probabilityMutation;
-
-        //            xlWorkSheet.Cells[(i + 2), 5] = column1[i];
-        //            xlWorkSheet.Cells[(i + 2), 6] = column2[i];
-        //            xlWorkSheet.Cells[(i + 2), 7] = stddeviation[i];
-        //            xlWorkSheet.Cells[(i + 2), 8] = avg[i];
-        //        }
-
-        //        xlWorkSheet.Cells[1, 10] = "Best Result";
-        //        xlWorkSheet.Cells[1, 11] = "";
-        //        xlWorkSheet.Cells[2, 10] = "X";
-        //        xlWorkSheet.Cells[2, 11] = "f(Xbest)";
-        //        xlWorkSheet.Cells[3, 10] = GetTheBestChromossome(column1);
-        //        xlWorkSheet.Cells[3, 11] = Equation.set(myGA.functionType, GetTheBestChromossome(column1));
-
-        //        xlWorkBook.SaveAs(tbFileName.Text, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-        //        xlWorkBook.Close(true, misValue, misValue);
-        //        xlApp.Quit();
-
-        //        liberarObjetos(xlWorkSheet);
-        //        liberarObjetos(xlWorkBook);
-        //        liberarObjetos(xlApp);
-
-        //        MessageBox.Show("O arquivo Excel foi criado com sucesso. Você pode encontrá-lo em : " + tbFileName.Text);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Erro : " + ex.Message);
-        //    }
-        //}
-
-        //private void GAProcess()
-        //{
-
-
-        //}
-
-        //private double GetTheBestChromossome(List<double> population_values)
-        //{
-        //    List<double> elite_values = population_values;
-        //    List<double> elite_fitness = new List<double>();
-        //    elite_fitness.Clear();
-
-        //    for (int i = 0; i < elite_values.Count(); i++)
-        //    {
-        //        elite_fitness.Add(Fitness.set(myGA.functionType, myGA.optimizationType, elite_values[i]));
-        //    }
-
-
-        //    Array aelite_values = elite_values.ToArray();
-        //    Array aelite_fitness = elite_fitness.ToArray();
-        //    Array.Sort(aelite_fitness, aelite_values);
-
-        //    elite_values = aelite_values.OfType<double>().ToList();
-        //    elite_fitness = aelite_fitness.OfType<double>().ToList();
-
-        //    elite_values.Reverse();
-
-        //    return elite_values[0];
-        //}
-
-        //private void save()
-        //{
-
-        //}
-
-        //private void liberarObjetos(object obj)
-        //{
-        //    try
-        //    {
-        //        System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
-        //        obj = null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        obj = null;
-        //        MessageBox.Show("Ocorreu um erro durante a liberação do objeto " + ex.ToString());
-        //    }
-        //    finally
-        //    {
-        //        GC.Collect();
-        //    }
-        //}
+        private void liberarObjetos(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch (Exception ex)
+            {
+                obj = null;
+                MessageBox.Show("Ocorreu um erro durante a liberação do objeto " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
 
     }
 }

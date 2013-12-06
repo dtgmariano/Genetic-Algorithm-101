@@ -35,20 +35,17 @@ namespace GA
         int nog_count;
 
         /*Constructor*/
-        public Graphic_View()
+
+        public Graphic_View(int _min, int _max, int _res, 
+            int _popsize, int _numgenerations, double _probcrossover, double _probmutation,
+            bool _hasranking, bool _haselitism, int _elitism_counter, 
+            int _selec_op, int _cross_op, int _mutant_op, int _optim_op)
         {
             InitializeComponent();
-        }
-
-        /*Overrided Constructor*/
-
-        public Graphic_View(int rmin, int rmax, int gran,
-            int ps, int ng, double pc, double pm,
-            bool hasRanking, bool hasElite, int elite_counter, 
-            int selec_op, int cross_op, int optim_op)
-        {
-            InitializeComponent();
-            myGA = new GA(rmin, rmax, gran, ps, ng, pc, pm, hasRanking, hasElite, elite_counter, random);
+            myGA = new GA(_min, _max, _res,
+                _popsize, _numgenerations, _probcrossover, _probmutation,
+                _hasranking, _haselitism, _elitism_counter,
+                _selec_op, _cross_op, _mutant_op, _optim_op, random);
 
             setGraphSettings();
             GAPointsLI = zgcFunction.GraphPane.AddCurve("GA Points", GAPointsRPPL, Color.Blue, SymbolType.Circle);
@@ -162,77 +159,5 @@ namespace GA
             if (nog_count >= myGA.numgenerations)
                 GenAlgTimer.Enabled = false;
         }
-
-        //private void GenAlgTimer_Tick(object sender, EventArgs e)
-        //{
-        //    /*For the following Generation do*/
-        //    if (startGA_flag == true)
-        //    {
-        //        myGA.elitismStep();
-        //        myGA.selectionStep();
-        //        myGA.crossoverStep();
-        //        myGA.mutationStep();
-        //        myGA.updateStep();
-        //        nog_count++;  
-        //    }
-        //    /*For the first Generation do*/
-        //    else
-        //    {
-        //        startGA_flag = true;
-
-        //        myGA.beginStep();
-        //        champion = myGA.getChampion();
-        //        avgResponse = myGA.getAverageResponse();
-
-        //        PCavgPointsRPPL.Add(nog_count, avgResponse);
-        //        PCmaxPointsRPPL.Add(nog_count, Equation.Fx(champion.value));
-        //        rtbInfo.AppendText("GA parameters per generation\n");
-        //        rtbInfo.AppendText("Gen.: " + (nog_count + 1) + " Best: " + Math.Round(champion.value, 2) + " F(x): " + Math.Round(Equation.Fx(champion.value), 2) + "\n");
-
-
-        //        UpdateGraphTimer.Enabled = true;
-        //        //rtbInfo.AppendText("Gen.: 1 Max.: " + Math.Round(myGA.chromoValue.Max(), 2) + " Fit.: " + Math.Round(Equation.F1x(myGA.chromoValue.Max()),2) + "\n");
-        //        myGA.elitismStep();
-        //        myGA.selectionStep();
-        //        myGA.crossoverStep();
-        //        myGA.mutationStep();
-        //        myGA.updateStep();
-
-        //        nog_count++;
-        //        UpdateGraphTimer.Enabled = true;
-        //    }
-
-        //    /*After reaching the number of generations value stops the GA process and the Graph Update Process*/
-        //    if (nog_count >= myGA.numgenerations)
-        //    {
-        //        GenAlgTimer.Enabled = false;
-        //        UpdateGraphTimer.Enabled = false;
-        //        startGA_flag = false;
-        //        nog_count = 0;
-        //        rtbInfo.AppendText("GA Process has reached the end!\n");
-        //        MessageBox.Show("GA Process has reached the end!");
-        //        rtbInfo.AppendText(Math.Round(champion.value, 2) + "\t" + Math.Round(Equation.Fx(champion.value), 2) + "\n");
-
-        //    }
-        //}
-
-        private void UpdateGraphTimer_Tick(object sender, EventArgs e)
-        {
-            GAPointsRPPL.Clear();
-            for (int i = 0; i < myGA.popsize; i++)
-                GAPointsRPPL.Add(myGA.population[i].value, Equation.Fx(myGA.population[i].value));
-
-            champion = myGA.getChampion();
-            avgResponse = myGA.getAverageResponse();
-
-            PCavgPointsRPPL.Add(nog_count, avgResponse);
-            PCmaxPointsRPPL.Add(nog_count, Equation.Fx(champion.value));
-            rtbInfo.AppendText("Gen.: " + (nog_count + 1) + " Best: " + Math.Round(champion.value, 2) + " F(x): " + Math.Round(Equation.Fx(champion.value), 2) + "\n");
-
-            zgcFunction.Invalidate();
-            zgcPerformance.Invalidate();
-        }
-
-
     }
 }
