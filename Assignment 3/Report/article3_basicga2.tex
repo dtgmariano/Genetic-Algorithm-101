@@ -341,44 +341,45 @@ O outro objeto é um gráfico de performance do AG. Para cada geração (eixo x)
     \includegraphics[scale = 0.47]{performance_curve.png}
 \end{figure}
 
-Para realizar uma análise mais detalhada do problema foi desenvolvido um outro módulo para a aplicação. Neste módulo o usuário determina os parâmetros do AG (Tamanho da população, número de gerações, probabilidade de cruzamento, probabilidade de mutação, limites de valores, resolução do cromossomo) e  o número de simulações para resolver o problema. Para cada simulação algumas informações como a melhor solução, média e desvio padrão populacional, são salvas em uma planilha. Com este módulo foi realizado os seguintes testes: Foram efetuadas 100 repetições do processamento do AG do problema, para diferentes números de gerações: 4, 8, 12, 16, 20 e 50.
+Para o problema foi realizado um teste para analisar como o elitismo afeta o AG. Para isso foi estipulado os seguintes parâmetros do AG a ser testado:
 
 \begin{table}[H]
 \label{tab:popinfo}
-\caption{Distribuição das probabilidades (seleção e acumulada)}
+\caption{Parâmetros do AG}
 \centering
 \begin{tabular}{ccc}
 \toprule
 PS & Tamanho da população & 50\\
+NG & Número de Geraçoes & 20\\
 Pc & Probabilidade de Cruzamento & 60\%\\
 Pm & Probabilidade de Mutação & 1\%\\
 Rmin & Limite mínimo & 0\\
 Rmax & Limite máximo & 512\\
-G & Resolução & 1\\
+G & Resolução & 0\\
 NR & Número de repetições & 100\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Após os testes, foram separados o melhor cromossomo e o desvio padrão entre as repetições para uma das diferentes condições de números de gerações do AG.
+Com estas configurações foram realizados comparações entre AsG com 0\%, 10\%, 20\% e 30\% de elitismo. Para cada condição foram realizadas 100 execuções. Em cada execução foi anotado o desvio padrão entre os f(x) dos cromossomos da última geração do AG  \ref{fig:devpadelit} e o valor do cromossomo com maior avaliação da população \ref{fig:devpadelit}.
 
 \begin{figure}[H]
-\label{fig:t1}
-  \caption{Avaliação do melhor cromossomo.}
+\label{fig:devpadelit}
+  \caption{Desvio padrão de AG's com diferentes valores de elitismo.}
   \centering
-    \includegraphics[scale = 0.7]{test_aval1.png}
+    \includegraphics[scale = 0.47]{elitism_analysis.png}
 \end{figure}
 
 \begin{figure}[H]
-\label{fig:t2}
-  \caption{Desvio padrão populacional.}
+\label{fig:devpadelit2}
+  \caption{Valor do melhor cromossomo do AG para cada condição de elitismo.}
   \centering
-    \includegraphics[scale = 0.7]{test_aval2.png}
+    \includegraphics[scale = 0.47]{elitism_analysis1.png}
 \end{figure}
-%------------------------------------------------
 
 \section{Discussion}
-Foi possível analisar em (\ref{fig:t1}) que com apenas 4 gerações o AG foi capaz de encontrar a melhor solução para o problema, haja visto que as repetições para 8, 12, 16, 20 e 50 números de gerações encontraram a mesma solução. Com relação ao desvio padrão populacional, pode-se concluir que quanto maior for o número de gerações do AG, menor será o desvio padrão da sua população. A medida que os processos de seleção e reprodução acontecem, a população elimina os indivíduos de menor avaliação em detrito dos de melhor avaliação. 
+No 1º teste foi possível analisar em (\ref{fig:devpadelit}) que a porcentagem de elitismo é aumentada, o desvio padrão populacional tende a diminuir. Nas quatro condições, o melhor cromossomo populacional possuíam o mesmo valor conforme (\ref{fig:devpadelit2}).
+
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
