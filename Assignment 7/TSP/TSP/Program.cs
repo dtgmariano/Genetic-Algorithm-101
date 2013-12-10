@@ -15,7 +15,7 @@ namespace GA
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SettingsView());
+            Application.Run(new MapView());
         }
     }
 }

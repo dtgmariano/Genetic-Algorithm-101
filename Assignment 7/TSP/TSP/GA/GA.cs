@@ -7,251 +7,126 @@ namespace GA
 {
     public class GA
     {
-        /*Variables declaration*/
+        public World world;
 
-        /*Chromossomes paremeters variables*/
-        public int min, max, res;
-        /*GA paremeters variables*/
-        public int popsize, numgenerations, elitism_counter;
-        public double elitism_percentage;
-        public bool hasRanking, hasElitism;
+        public int numberOfCities;
+
+        public int popsize, numgenerations;
         public double probcrossover, probmutation;
-        public int countcrossover, countmutation;
-        public int selectionMethod, crossoverMethod, mutationMethod, optimizationMethod;
+        public Random random;
 
-        /*GA Lists variables*/
         public List<Chromossome> population;
         public List<Chromossome> elite;
         public List<Chromossome> parents;
         public List<Chromossome> offspring;
-        public List<Chromossome> mutant;
-        public Chromossome champion;
+        public List<Chromossome> mutants;
 
-        /*Random variables*/
-        Random random;
+        public Chromossome champion;
+       
+        public double elitismPctg;
+        public bool elitismCheck;
+        public int elitismCount;
+
+        public int selectionMethod;
+        public int crossoverMethod;
+        public int mutationMethod;
+        public int tournamentNumPlayers;
 
         /*Constructor*/
-        public GA(int _min, int _max, int _res, 
-            int _popsize, int _numgenerations, double _probcrossover, double _probmutation,
-            bool _ranking, bool _elitism, double _elitism_percentage, 
-            int _selec_op, int _cross_op, int _mutan_op, int _optim_op,
-            Random _random)
+        public GA(World _world,
+            int _popsize, int _numgenerations, double _probcrossover, double _probmutation, double _elitism_percentage,
+            int _selec_op, int _cross_op, int _mutan_op, Random _random)
         {
-            this.min = _min;
-            this.max = _max;
-            this.res = _res;
+            this.random = _random;
+            this.world = _world;
+            this.numberOfCities = world.citiesList.Count();
 
             this.popsize = _popsize;
             this.numgenerations = _numgenerations;
             this.probcrossover = _probcrossover;
             this.probmutation = _probmutation;
 
-            this.hasRanking = _ranking;
-            this.hasElitism = _elitism;
-            this.elitism_percentage = _elitism_percentage;
-            this.elitism_counter = Convert.ToInt32(Convert.ToDouble(this.popsize) * this.elitism_percentage);
+            this.elitismPctg = _elitism_percentage;
+            this.elitismCount = Convert.ToInt32(Convert.ToDouble(this.popsize) * this.elitismPctg);
 
             this.selectionMethod = _selec_op;
             this.crossoverMethod = _cross_op;
             this.mutationMethod = _mutan_op;
-            this.optimizationMethod = _optim_op;
-
-            this.random = _random;
         }
 
-        /*GA Processes*/
-        public void processesGA()
-        {
-            rankingStep();
-            elitismStep();
-            selectionStep();
-            crossoverStep();
-            mutationStep();
-            updateStep();
-        }
+        #region Start Methods
 
-        /*GA Steps*/
         public void beginStep()
         {
-            population = new List<Chromossome>();
-            elite = new List<Chromossome>();
+            population = startPopulation();
+            champion = getChampion(population);
             parents = new List<Chromossome>();
             offspring = new List<Chromossome>();
-            mutant = new List<Chromossome>();
-            startPopulation();
-            champion = getChampion(population);
         }
 
-        public void startPopulation()
+        public List<Chromossome> startPopulation()
         {
-            population.Clear();
+            List<Chromossome> population = new List<Chromossome>();
             for (int i = 0; i < this.popsize; i++)
-                population.Add(new Chromossome(this.min, this.max, this.res, this.optimizationMethod, this.random));
+                population.Add(new Chromossome(this.world.citiesList, this.random));
+            return population;
         }
 
-        public void rankingStep()
-        {
-            if (hasRanking == true)
-                linearRanking(); 
-        }
+        #endregion
 
+        #region Elitism Methods
         public void elitismStep()
         {
-            if (hasElitism == true)
-            {
-                if (hasRanking == true)
-                    rankingElitism();
-                else
-                    basicElitism();
-            }
+            elite = basicElitism(this.population, this.elitismCount);
         }
 
+        public List<Chromossome> basicElitism(List<Chromossome> _population, int _elitismCount)
+        {
+            List<Chromossome> population = _population;
+            List<double> populationFitness = new List<double>();
+
+            for (int i = 0; i < population.Count(); i++)
+                populationFitness.Add(population[i].fitness);
+
+            Array acandidates = population.ToArray();
+            Array acandidates_fitness = populationFitness.ToArray();
+            Array.Sort(acandidates_fitness, acandidates);
+
+            population = acandidates.OfType<Chromossome>().ToList();
+            population.Reverse();
+            population.RemoveRange(elitismCount, population.Count() - elitismCount);
+
+            return population;
+        }
+        #endregion
+
+        #region Selection Methods
+        /*Selection methods*/
         public void selectionStep()
         {
             switch (selectionMethod)
             {
                 case 0:
                     {
-                        roulette_wheel();
+                        rouletteWheel();
                         break;
                     }
                 case 1:
                     {
-                        tournament(3);
+                        tournament(tournamentNumPlayers);
                         break;
                     }
                 default:
                     {
-                        roulette_wheel();
-                        break;
-                    }
-
-            }
-        }
-
-        public void crossoverStep()
-        {
-            this.countcrossover = 0;
-            switch (crossoverMethod)
-            {
-                case 0:
-                    {
-                        one_point();
-                        break;
-                    }
-                default:
-                    {
-                        one_point();
-                        break;
-                    }
-
-            }
-        }
-
-        public void mutationStep()
-        {
-            this.countmutation = 0;
-            switch (mutationMethod)
-            {
-                case 0:
-                    {
-                        singlebit();
-                        break;
-                    }
-                default:
-                    {
-                        singlebit();
+                        rouletteWheel();
                         break;
                     }
             }
         }
 
-        public void updateStep()
+        public void rouletteWheel()
         {
-            population.Clear();
-            foreach (Chromossome c in mutant)
-                population.Add(c);
-            foreach (Chromossome c in elite)
-                population.Add(c);
-            if (population.Count() == 0)
-            {
-            }
-            champion = getChampion(population);
-        }
-
-        /*Ranking Methods*/
-        public void linearRanking()
-        {
-            List<double> population_fitness = new List<double>();
-
-            for (int i = 0; i < population.Count(); i++)
-            {
-                population_fitness.Add(population[i].fitness);
-            }
-
-            Array apopulation = population.ToArray();
-            Array apopulation_fitness = population_fitness.ToArray();
-            Array.Sort(apopulation_fitness, apopulation);
-
-            population = apopulation.OfType<Chromossome>().ToList();
-            //candidates_fitness = acandidates_fitness.OfType<double>().ToList();
-
-            population.Reverse();
-            //candidates_fitness.Reverse();
-
-            elite.Clear();
-            int score = population.Count();
-
-            foreach (Chromossome c in population)
-            {
-                c.avaliationBasedOnRanking(score);
-                score--;
-            }
-        }
-
-        /*Elitism methods*/
-        public void basicElitism()
-        {
-            List<Chromossome> candidates = new List<Chromossome>();
-            List<double> candidates_fitness = new List<double>();
-
-            for (int i = 0; i < population.Count(); i++)
-            {
-                candidates.Add(population[i]);
-                candidates_fitness.Add(population[i].fitness);
-            }
-
-            Array acandidates = candidates.ToArray();
-            Array acandidates_fitness = candidates_fitness.ToArray();
-            Array.Sort(acandidates_fitness, acandidates);
-
-            candidates = acandidates.OfType<Chromossome>().ToList();
-            //candidates_fitness = acandidates_fitness.OfType<double>().ToList();
-
-            candidates.Reverse();
-            //candidates_fitness.Reverse();
-
-            if (candidates[0].code == "")
-                Console.WriteLine("");
-
-            champion = candidates[0];
-
-            elite.Clear();
-            for (int i = 0; i < elitism_counter; i++)
-                elite.Add(candidates[i]);
-        }
-
-        public void rankingElitism()
-        {
-            elite.Clear();
-            for (int i = 0; i < elitism_counter; i++)
-                elite.Add(population[i]);
-        }
-        
-        /*Selection methods*/
-        public void roulette_wheel()
-        {
-            double total_fitness = 0 ;
+            double total_fitness = 0;
 
             foreach (Chromossome c in population)
                 total_fitness += c.fitness;
@@ -263,18 +138,18 @@ namespace GA
             {
                 ps.Add(population[i].fitness / total_fitness);
                 psa.Add(0.0);
-                
+
                 for (int j = 0; j <= i; j++)
                 {
                     psa[i] += ps[j];
                 }
             }
- 
+
             double wheelCounter;
 
             this.parents.Clear();
 
-            for (int i = 0; i < (this.popsize - this.elitism_counter); i++)
+            for (int i = 0; i < (this.popsize - this.elitismCount); i++)
             {
                 //wheelCounter = this.random.Next(Convert.ToInt32(Math.Floor(psa.Max())));
                 wheelCounter = this.random.NextDouble();
@@ -299,13 +174,13 @@ namespace GA
 
             this.parents.Clear();
 
-            for (int i = 0; i < (this.popsize - this.elitism_counter); i++)
+            for (int i = 0; i < (this.popsize - this.elitismCount); i++)
             {
                 //Select players
                 players.Clear();
                 for (int j = 0; j < n; j++)
                 {
-                    dice = this.random.Next(0,this.population.Count());
+                    dice = this.random.Next(0, this.population.Count());
                     players.Add(population[dice]);
                 }
                 if (players.Count() == 0)
@@ -314,172 +189,108 @@ namespace GA
                 this.parents.Add(getChampion(players));
             }
         }
+        #endregion
 
-        /*Crossover methods*/
-        public void one_point()
+        #region Crossover Methods
+        public void crossoverStep()
         {
             double dice;
-            int crossoverpoint;
-            int size = population[0].nbits; ;
-            string genes_offspring1, genes_offspring2;
-            this.offspring.Clear();
+
+            offspring.Clear();
 
             if (parents.Count() % 2 == 0) // Even number of parents
             {
-                for (int i = 0; i < (parents.Count()/2); i++)
+                for (int i = 0; i < (parents.Count() / 2); i++)
                 {
-                    dice = random.NextDouble();
+                    dice = this.random.NextDouble();
                     if (dice <= this.probcrossover)
                     {
-                        this.countcrossover++;
-                        crossoverpoint = random.Next(0, size);
-                        genes_offspring1 =  ((parents[(i * 2)    ]).code).Substring(0, crossoverpoint);
-                        genes_offspring2 =  ((parents[(i * 2) + 1]).code).Substring(0, crossoverpoint);
-                        genes_offspring1 += ((parents[(i * 2) + 1]).code).Substring(crossoverpoint, size - crossoverpoint);
-                        genes_offspring2 += ((parents[(i * 2)    ]).code).Substring(crossoverpoint, size - crossoverpoint);
-                        offspring.Add(new Chromossome(genes_offspring1, this.min, this.max, this.res, this.optimizationMethod, this.random));
-                        offspring.Add(new Chromossome(genes_offspring2, this.min, this.max, this.res, this.optimizationMethod, this.random));
+                        offspring.Add(onepointProcedure(parents[i * 2], parents[i * 2 + 1]));
+                        offspring.Add(onepointProcedure(parents[i * 2 + 1], parents[i * 2]));
                     }
                     else
                     {
-                        offspring.Add(parents[(i * 2)    ]);
-                        offspring.Add(parents[(i * 2) + 1]);
+                        offspring.Add(parents[i * 2]);
+                        offspring.Add(parents[i * 2 + 1]);
                     }
                 }
             }
-            else //Odd number of parents
+            else // Odd number of parents
             {
-                for (int i = 0; i < ((parents.Count() - 1) / 2); i++)
+                for (int i = 0; i < ((parents.Count() - 1 )/ 2); i++)
                 {
-                    dice = random.NextDouble();
+                    dice = this.random.NextDouble();
                     if (dice <= this.probcrossover)
                     {
-                        this.countcrossover++;
-                        crossoverpoint = this.random.Next(0, size);
-                        genes_offspring1 = ((parents[(i * 2)]).code).Substring(0, crossoverpoint);
-                        genes_offspring2 = ((parents[(i * 2) + 1]).code).Substring(0, crossoverpoint);
-                        genes_offspring1 += ((parents[(i * 2) + 1]).code).Substring(crossoverpoint, size - crossoverpoint);
-                        genes_offspring2 += ((parents[(i * 2)]).code).Substring(crossoverpoint, size - crossoverpoint);
-                        offspring.Add(new Chromossome(genes_offspring1, this.min, this.max, this.res, this.optimizationMethod, this.random));
-                        offspring.Add(new Chromossome(genes_offspring2, this.min, this.max, this.res, this.optimizationMethod, this.random));
+                        offspring.Add(onepointProcedure(parents[i * 2], parents[i * 2 + 1]));
+                        offspring.Add(onepointProcedure(parents[i * 2 + 1], parents[i * 2]));
                     }
                     else
                     {
-                        offspring.Add(parents[(i * 2)]);
-                        offspring.Add(parents[(i * 2) + 1]);
+                        offspring.Add(parents[i * 2]);
+                        offspring.Add(parents[i * 2 + 1]);
                     }
                 }
                 offspring.Add(parents[parents.Count() - 1]);
             }
         }
 
-        /*Mutation methods*/
-        public void singlebit()
+        public Chromossome onepointProcedure(Chromossome A, Chromossome B)
         {
-            double dice;
-            int mutationpoint;
-            int size = population[0].nbits;;
-            string genes_mutant = "";
-
-            mutant.Clear();
-
-            foreach (Chromossome c in offspring)
+            int stopCondition = 0;
+            List<City> newCode = new List<City>(A.code);
+            
+            while (stopCondition <= 100000)
             {
-                dice = this.random.NextDouble();
-                if (dice <= this.probmutation)
+                int crossoverpoint = random.Next(0, A.code.Count());
+                newCode.Clear();
+
+                for (int i = 0; i < crossoverpoint; i++)
+                    newCode.Add(A.code[i]);
+                for (int i = crossoverpoint; i < B.code.Count(); i++)
+                    newCode.Add(B.code[i]);
+
+                if (validateChromossomeCode(newCode) == false)
                 {
-                    this.countmutation++;
-                    mutationpoint = this.random.Next(0, size);
-                    if ((c.code)[mutationpoint] == '0')
-                    {
-                        genes_mutant = (c.code).Substring(0, mutationpoint);
-                        genes_mutant += '1';
-                        genes_mutant += (c.code).Substring(mutationpoint + 1);
-                    }
-                    else
-                    {
-                        genes_mutant = (c.code).Substring(0, mutationpoint);
-                        genes_mutant += '0';
-                        genes_mutant += (c.code).Substring(mutationpoint + 1);
-                    }
-                    mutant.Add(new Chromossome(genes_mutant, this.min, this.max, this.res, this.optimizationMethod, this.random));
+                    stopCondition++;
+                    newCode = new List<City>(A.code);
                 }
                 else
                 {
-                    mutant.Add(c);
+                    break;
                 }
-                
             }
+
+            Chromossome newOffspring = new Chromossome(newCode, world.citiesList, random);
+            return newOffspring;
         }
 
-        /*Other methods*/
-        public double getAverageValue()
+        public bool validateChromossomeCode(List<City> _code)
         {
-            double avgvalue=0;
+            bool isValid = false;
+            int check = 0;
 
-            foreach(Chromossome c in population)
+            for (int i = 0; i < _code.Count(); i++)
             {
-                avgvalue += c.x;
+                for (int j = i; j < _code.Count(); j++)
+                {
+                    if (_code[i].id != _code[j].id)
+                    {
+                        isValid = true;
+                    }
+                    else
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
             }
 
-            avgvalue /= population.Count();
-
-            return avgvalue;
-
+            return isValid;
         }
+        #endregion
 
-        public double getAverageResponse()
-        {
-            double avgresponse = 0;
-
-            foreach (Chromossome c in population)
-            {
-                avgresponse += Equation.Fx(c.x);
-            }
-
-            avgresponse /= population.Count();
-
-            return avgresponse;
-        }
-
-        public double getAverageFitness()
-        {
-            double avgfitness=0;
-
-            foreach(Chromossome c in population)
-            {
-                avgfitness += c.fitness;
-            }
-
-            avgfitness /= population.Count();
-
-            return avgfitness;
-        }
-
-        //public Chromossome getChampion()
-        //{
-        //    Chromossome champ;
-
-        //    List<Chromossome> candidates = new List<Chromossome>();
-        //    List<double> candidates_fitness = new List<double>();
-
-        //    for(int i=0; i<population.Count(); i++)
-        //    {
-        //        candidates.Add(population[i]);
-        //        candidates_fitness.Add(population[i].fitness);
-        //    }
-
-        //    Array acandidates = candidates.ToArray();
-        //    Array acandidates_fitness = candidates_fitness.ToArray();
-        //    Array.Sort(acandidates_fitness, acandidates);
-
-        //    candidates = acandidates.OfType<Chromossome>().ToList();
-        //    candidates.Reverse();
-        //    champ = candidates[0];
-
-        //    return champ;
-        //}
-
+        #region Other Methods
         public Chromossome getChampion(List<Chromossome> _population)
         {
             Chromossome champ;
@@ -503,5 +314,7 @@ namespace GA
 
             return champ;
         }
+        #endregion  
+
     }
 }

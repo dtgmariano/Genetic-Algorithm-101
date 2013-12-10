@@ -7,64 +7,64 @@ namespace GA
 {
     public class Chromossome
     {
-        public int min, max, res, nbits;
-        public string code;
-        public double x, y, fitness;
-        private int optimization;
-
+        public int size;
+        public List<City> code;
+        public double fitness;
+        public double traveldistance;
         Random random;
 
         /*Constructor for the first chromossome*/
-        public Chromossome(int _min, int _max, int _res, int _optimization, Random _random)
+        public Chromossome(List<City> _worldsCities, Random _random)
         {
             this.random = _random;
-            this.min = _min;
-            this.max = _max;
-            this.res = _res;
-            this.nbits = Convert.ToInt32(Math.Ceiling(Math.Log((this.max - this.min), 2))) + this.res;
-            this.code = BinaryOperators.GeneratesBinaryString(this.random, this.nbits);
-            this.x = BinaryOperators.BinaryStringToDecimal(this.code);
-            //this.fx = Equation.Fx(x);
-            this.optimization = _optimization;
-            avaliationBasedOnFunction();
+            this.size = _worldsCities.Count();
+            this.code = generateCode(_worldsCities, random);
+            this.traveldistance = getTravelDistance(code);
+            this.fitness = getFitness(traveldistance);
         }
 
-        /*Constructor for offspring chromossomes*/
-        public Chromossome(string _code, int _min, int _max, int _res, int _optimization, Random _random)
+        public Chromossome(List<City> _code, List<City> _worldsCities, Random _random)
         {
             this.random = _random;
-            this.min = _min;
-            this.max = _max;
-            this.res = _res;
-            this.nbits = Convert.ToInt32(Math.Ceiling(Math.Log((this.max - this.min), 2))) + this.res;
+            this.size = _worldsCities.Count();
             this.code = _code;
-            this.x = BinaryOperators.BinaryStringToDecimal(this.code);
-            this.fx = Equation.Fx(x);
-            this.optimization = _optimization;
-            avaliationBasedOnFunction();
+            this.traveldistance = getTravelDistance(code);
+            this.fitness = getFitness(traveldistance);
         }
 
-        /*Avaliation methods*/
-        public void avaliationBasedOnFunction()
+        public List<City> generateCode(List<City> _worldsCities, Random _random)
         {
-            switch (this.optimization)            
+            List<City> code = new List<City>();
+            List<City> worldsCities = new List<City>(_worldsCities);
+
+            while (worldsCities.Count != 0)
             {
-                case 0:
-                    {
-                        this.fitness = this.fx;
-                        break;
-                    }
-                case 1:
-                    {
-                        this.fitness = -this.fx;
-                        break;
-                    }
+                int point = _random.Next(0, worldsCities.Count);
+                code.Add(worldsCities[point]);
+                worldsCities.RemoveAt(point);
             }
+            return code;
         }
 
-        public void avaliationBasedOnRanking(double _score)
+        public double getTravelDistance(List<City> cities)
         {
-            this.fitness = _score;
+            double travelDistance = 0;
+            for (int i = 0; i < (this.size - 1); i++)
+            {
+                travelDistance += distanceBetweenCities(cities[i], cities[i + 1]);
+            }
+            return travelDistance; 
+        }
+
+        public double distanceBetweenCities(City A, City B)
+        {
+            return Math.Sqrt((Math.Pow(Math.Abs(A.x - B.x),2)) + (Math.Pow(Math.Abs(A.y - B.y),2)));
+        }
+
+        public double getFitness(double _traveldistance)
+        {
+            return _traveldistance;
+            //return (1.0 / _traveldistance);
         }
 
     }

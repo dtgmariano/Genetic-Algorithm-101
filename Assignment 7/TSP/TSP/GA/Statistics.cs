@@ -9,109 +9,109 @@ namespace GA
     {
         public static int Rounding { get; set; }
 
-        public static double Average(List<double> sampleList)
-        {
-            double sum = 0;
+        //public static double Average(List<double> sampleList)
+        //{
+        //    double sum = 0;
 
-            for (int i = 0; i < sampleList.Count; i++)
-                sum += sampleList[i];
+        //    for (int i = 0; i < sampleList.Count; i++)
+        //        sum += sampleList[i];
 
-            return Math.Round(sum / sampleList.Count, Rounding);
-        }
+        //    return Math.Round(sum / sampleList.Count, Rounding);
+        //}
 
-        public static double Variance(List<double> sampleList)
-        {
-            double sum = 0;
+        //public static double Variance(List<double> sampleList)
+        //{
+        //    double sum = 0;
 
-            double mean = Average(sampleList);
+        //    double mean = Average(sampleList);
 
-            for (int i = 0; i < sampleList.Count(); i++)
-                sum += Math.Pow((sampleList[i] - mean), 2);
+        //    for (int i = 0; i < sampleList.Count(); i++)
+        //        sum += Math.Pow((sampleList[i] - mean), 2);
 
-            return Math.Round((sum / (sampleList.Count() - 1)), Rounding);
-        }
+        //    return Math.Round((sum / (sampleList.Count() - 1)), Rounding);
+        //}
 
-        public static double StandardDeviation(List<double> sampleList)
-        {
-            return Math.Round(Math.Sqrt(Variance(sampleList)), Rounding);
-        }
+        //public static double StandardDeviation(List<double> sampleList)
+        //{
+        //    return Math.Round(Math.Sqrt(Variance(sampleList)), Rounding);
+        //}
 
-        public static double Value_Average(List<Chromossome> sampleList)
-        {
-            double sum = 0;
+        //public static double Value_Average(List<Chromossome> sampleList)
+        //{
+        //    double sum = 0;
 
-            for (int i = 0; i < sampleList.Count; i++)
-                sum += sampleList[i].x;
+        //    for (int i = 0; i < sampleList.Count; i++)
+        //        sum += sampleList[i].x;
 
-            return Math.Round(sum / sampleList.Count, Rounding);
-        }
+        //    return Math.Round(sum / sampleList.Count, Rounding);
+        //}
 
-        public static double Value_Variance(List<Chromossome> sampleList)
-        {
-            double sum = 0;
+        //public static double Value_Variance(List<Chromossome> sampleList)
+        //{
+        //    double sum = 0;
 
-            double mean = Value_Average(sampleList);
+        //    double mean = Value_Average(sampleList);
 
-            for (int i = 0; i < sampleList.Count(); i++)
-                sum += Math.Pow((sampleList[i].x - mean), 2);
+        //    for (int i = 0; i < sampleList.Count(); i++)
+        //        sum += Math.Pow((sampleList[i].x - mean), 2);
 
-            return Math.Round((sum / (sampleList.Count() - 1)), Rounding);
-        }
+        //    return Math.Round((sum / (sampleList.Count() - 1)), Rounding);
+        //}
 
-        public static double Value_StandardDeviation(List<Chromossome> sampleList)
-        {
-            return Math.Round(Math.Sqrt(Value_Variance(sampleList)), Rounding);
-        }
+        //public static double Value_StandardDeviation(List<Chromossome> sampleList)
+        //{
+        //    return Math.Round(Math.Sqrt(Value_Variance(sampleList)), Rounding);
+        //}
 
-        public static double FuncValue_Average(List<Chromossome> sampleList)
-        {
-            double sum = 0;
+        //public static double FuncValue_Average(List<Chromossome> sampleList)
+        //{
+        //    double sum = 0;
 
-            for (int i = 0; i < sampleList.Count; i++)
-                sum += Equation.Fx(sampleList[i].x);
+        //    for (int i = 0; i < sampleList.Count; i++)
+        //        sum += Equation.Fx(sampleList[i].x);
 
-            return Math.Round(sum / sampleList.Count, Rounding);
-        }
+        //    return Math.Round(sum / sampleList.Count, Rounding);
+        //}
 
-        public static double FuncValue_Variance(List<Chromossome> sampleList)
-        {
-            double sum = 0;
+        //public static double FuncValue_Variance(List<Chromossome> sampleList)
+        //{
+        //    double sum = 0;
 
-            double mean = FuncValue_Average(sampleList);
+        //    double mean = FuncValue_Average(sampleList);
 
-            for (int i = 0; i < sampleList.Count(); i++)
-                sum += Math.Pow((Equation.Fx(sampleList[i].x) - mean), 2);
+        //    for (int i = 0; i < sampleList.Count(); i++)
+        //        sum += Math.Pow((Equation.Fx(sampleList[i].x) - mean), 2);
 
-            return Math.Round((sum / (sampleList.Count() - 1)), Rounding);
-        }
+        //    return Math.Round((sum / (sampleList.Count() - 1)), Rounding);
+        //}
 
-        public static double FuncValue_StandardDeviation(List<Chromossome> sampleList)
-        {
-            return Math.Round(Math.Sqrt(FuncValue_Variance(sampleList)), Rounding);
-        }
+        //public static double FuncValue_StandardDeviation(List<Chromossome> sampleList)
+        //{
+        //    return Math.Round(Math.Sqrt(FuncValue_Variance(sampleList)), Rounding);
+        //}
 
-        public static Chromossome getTheBestChromossome(List<Chromossome> _population)
-        {
-            Chromossome champ;
+        //public static Chromossome getTheBestChromossome(List<Chromossome> _population)
+        //{
+        //    Chromossome champ;
 
-            List<Chromossome> candidates = new List<Chromossome>();
-            List<double> candidates_fitness = new List<double>();
+        //    List<Chromossome> candidates = new List<Chromossome>();
+        //    List<double> candidates_fitness = new List<double>();
 
-            for (int i = 0; i < _population.Count(); i++)
-            {
-                candidates.Add(_population[i]);
-                candidates_fitness.Add(_population[i].fitness);
-            }
+        //    for (int i = 0; i < _population.Count(); i++)
+        //    {
+        //        candidates.Add(_population[i]);
+        //        candidates_fitness.Add(_population[i].fitness);
+        //    }
 
-            Array acandidates = candidates.ToArray();
-            Array acandidates_fitness = candidates_fitness.ToArray();
-            Array.Sort(acandidates_fitness, acandidates);
+        //    Array acandidates = candidates.ToArray();
+        //    Array acandidates_fitness = candidates_fitness.ToArray();
+        //    Array.Sort(acandidates_fitness, acandidates);
 
-            candidates = acandidates.OfType<Chromossome>().ToList();
-            candidates.Reverse();
-            champ = candidates[0];
+        //    candidates = acandidates.OfType<Chromossome>().ToList();
+        //    candidates.Reverse();
+        //    champ = candidates[0];
 
-            return champ;
-        }
+        //    return champ;
+        //}
     }
 }
