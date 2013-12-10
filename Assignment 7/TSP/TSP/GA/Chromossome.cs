@@ -63,8 +63,8 @@ namespace GA
 
         public double getFitness(double _traveldistance)
         {
-            return _traveldistance;
-            //return (1.0 / _traveldistance);
+            //return _traveldistance;
+            return (1.0 / _traveldistance);
         }
 
     }

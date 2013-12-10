@@ -56,7 +56,7 @@ namespace GA
 
             this.random = new Random();
             this.myWorld = new World(nc, this.random);
-            this.myGA = new GA(myWorld, 8, 2, 0.6, 0.1, 0.1, 0, 0, 0, random);
+            this.myGA = new GA(myWorld, 20, 2, 0.6, 0.1, 0, 0, 0, 0, random);
 
             myGA.beginStep();
             myGA.elitismStep();

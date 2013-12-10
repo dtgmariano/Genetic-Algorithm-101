@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossoverForOrderedChromosomes", "CrossoverForOrderedChromosomes\CrossoverForOrderedChromosomes.csproj", "{E825DEB0-E3A1-4A5E-9EF6-6AB64AE3FFBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E825DEB0-E3A1-4A5E-9EF6-6AB64AE3FFBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E825DEB0-E3A1-4A5E-9EF6-6AB64AE3FFBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E825DEB0-E3A1-4A5E-9EF6-6AB64AE3FFBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E825DEB0-E3A1-4A5E-9EF6-6AB64AE3FFBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -7,6 +7,7 @@ namespace GA
 {
     public class GA
     {
+        #region Variables
         public World world;
 
         public int numberOfCities;
@@ -31,8 +32,9 @@ namespace GA
         public int crossoverMethod;
         public int mutationMethod;
         public int tournamentNumPlayers;
+        #endregion
 
-        /*Constructor*/
+        #region Constructor
         public GA(World _world,
             int _popsize, int _numgenerations, double _probcrossover, double _probmutation, double _elitism_percentage,
             int _selec_op, int _cross_op, int _mutan_op, Random _random)
@@ -53,6 +55,7 @@ namespace GA
             this.crossoverMethod = _cross_op;
             this.mutationMethod = _mutan_op;
         }
+        #endregion
 
         #region Start Methods
 
@@ -263,6 +266,33 @@ namespace GA
 
             Chromossome newOffspring = new Chromossome(newCode, world.citiesList, random);
             return newOffspring;
+        }
+
+        public List<Chromossome> PMX(List<Chromossome>_parents, Random _random)
+        {
+            List<Chromossome> offsprings = new List<Chromossome>();
+
+            List<City> code_pa = _parents[0].code;
+            List<City> code_pb = _parents[1].code;
+            List<City> code_oa = new List<City>();
+            List<City> code_ob = new List<City>();
+
+            /*Randomly generates two cutoff points*/
+            List<int> points = new List<int>();
+            points.Add(_random.Next(0, code_pa.Count()));
+            points.Add(_random.Next(0, code_pa.Count()));
+            while (points[0] == points[1])
+            {
+                points.Clear();
+                points.Add(_random.Next(0, code_pa.Count()));
+                points.Add(_random.Next(0, code_pa.Count()));
+            }
+            points.Sort();
+            
+            
+            
+
+            return offsprings;
         }
 
         public bool validateChromossomeCode(List<City> _code)

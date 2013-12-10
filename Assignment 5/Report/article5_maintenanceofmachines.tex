@@ -1,0 +1,395 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Journal Article
+% LaTeX Template
+% Version 1.3 (9/9/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[twoside]{article}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+\usepackage{multicol} % Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{hyperref} % For hyperlinks in the PDF
+
+\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec} % Allows customization of titles
+\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+\renewcommand\thesubsection{\arabic{subsection}} % Roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+\fancyhead[C]{PPGEB - FEELT - UFU $\bullet$ 2013/2} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{imgs/}}
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinestyle{sharpc}{language=[Sharp]C, frame=lr, rulecolor=\color{blue!80!black}, breaklines=true}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Algoritmo genético para planejamento de manutenções em sistemas de energia}} % Article title
+
+\author{
+\large
+\textsc{Daniel Teodoro Gonçalves Mariano, Keiji Yamanaka (Ph.D)}\\[2mm] % Your name
+\normalsize Universidade Federal de Uberlândia\\ \normalsize Uberlândia-MG, Brasil \\ % Your institution
+\normalsize {dtgmariano@gmail.com, keiji@ufu.br} % Your email address
+\vspace{-5mm}
+}
+\date{}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Insert title
+
+\thispagestyle{fancy} % All pages have headers and footers
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+
+\begin{abstract}
+\noindent
+Algoritmo genético é uma heurística de busca que simula o processo de evolução das espécies observado em sistemas biológicos
+\end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\begin{multicols}{2} % Two-column layout throughout the main article text
+
+\section{Introduçao}
+
+\subsection{Algoritmos Evolucionários}
+Algoritmos evolucionários utilizam modelos computacionais baseados em processos naturais de evolução como um instrumento para a resolução de problemas. Os modelos computacionais propostos se orientam pela simulação de conceitos de evolução das espécies: seleção, mutação e reprodução. Os algoritmos evolucionários operam proporcionando a manutenção de uma população de estruturas, chamadas de indivíduos ou cromossomos. Esses indivíduos se comportam de maneira similar à evolução das espécies, sendo submetidos à operadores genéticos (recombinação e mutação).Cada cromossomo recebe uma avaliação de acordo com o nível de aptidão que este possui dentro do contexto de um problema.
+
+\subsection{Algoritmos Genéticos}
+Algoritmos genéticos são um ramo dos algoritmos evolucionários, podendo ser definido como uma técnica de busca baseada numa metáfora do processo biológico de evolução natural. São técnicas heurísticas de otimização global. A otimização global é uma questão que opõe os GAs aos métodos como gradiente (hill climbing), que seguem a derivada de uma função de forma a encontrar o máximo de uma função, ficando facilmente retidos em máximos locais. Nos GAs, populações de indivíduos são criadas e submetidas aos operadores genéticos: seleção, recombinação (crossover) e mutação. Tais operadores utilizam uma caracterização da qualidade de cada individuo como solução do problema em questão chamada de avaliação. Dessa forma geram um processo de evolução natural destes indivíduos, que eventualmente devera gerar um individuo que caracterizara uma boa solução para o nosso problema.
+
+\subsection{Etapas de um AG}
+Um AG pode ser dividido nas seguintes etapas:
+
+\begin{enumerate}
+\setlength{\itemsep}{0.2cm}%
+ \setlength{\parskip}{0.2cm}
+\item Inicialização: A população inicial de soluções candidatas são usualmente geradas randomicamente ao longo do espaço de busca. Conhecimentos ou informações específicas do domínio do problema podem ser incorporadas ao algoritmo.
+\item Avaliação: Uma vez que a população é iniciada ou uma população descendente é criada, os valores de aptidão das soluções candidatas é avaliada.
+\item Seleção: Aloca mais cópias dessas soluções com valores de aptidão superior e, assim, impõe o mecanismo de sobrevivência do mais apto nas soluções candidatas. A idéia principal da seleção é de preferir as melhores soluções em relação as piores.
+\item Recombinação: Combina partes de dois ou mais cromossomos (soluções/indivíduos parentais) para gerar um novo cromossomo. Existem diferentes maneiras de se realizar a combinação entre indivíduos. A performance dessa etapa está relacionado com o quão apropriado é o mecanismo de recombinação projetado para aquele contexto. A prole sob recombinação não será idêntico a um pai em particular, pois irá recombinar traços dos pais de uma maneira nova
+\item Mutação: Enquanto a recombinação ocorre envolvendo dois ou mais cromossomos a mutação ocorre individualmente. A mutação promove a alteração da solução de maneira randômica. Existem diversas variações de mutações, geralmente envolvendo uma ou mais alterações dos traços de um cromossomo.
+\item Reposição: A população criada através da seleção, recombinação e mutação, substituirá os cromossoms pais. 
+\item Verificação da condição parada: Enquanto a condição de parada não foi encontrada, repete-se os procedimentos do passo 2 ao 6.
+\end{enumerate}
+
+\begin{figure}[H]
+  \caption{Diagrama de blocos de um AG básico.}
+  \centering
+    \includegraphics[scale = 1]{basicga_diagram.png}
+\end{figure}
+
+%------------------------------------------------
+
+\section{Métodos}
+O artigo vigente apresentará os princípios básicos de um algoritmo genético no desenvolvido de uma aplicação para realizar o planejamento da manutenção de máquinas de sistemas de energia. O software da aplicação foi desenvolvido na plataforma .NET, em linguagem computacional CSharp (C\#).
+
+O problema consiste em uma central de máquinas e no planejamento de cada maquinário. O planejamento desta manutenção deve levar em consideração os seguintes parâmetros: período de parada da máquina, demanda de energia por período e a potência de cada máquina. O intervalo de tempo considerado é anual, divido em quatro intervalos, equivalente a cada trimestre do ano.
+
+\begin{table}[H]
+\caption{Demanda populacional}
+\centering
+\begin{tabular}{cc}
+\toprule
+Período & Potência (MW)\\
+\midrule
+1º Trimestre & 80\\
+2º Trimestre & 90\\
+3º Trimestre & 65\\
+4º Trimestre & 70\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\caption{Característica de cada máquina}
+\centering
+\begin{tabular}{ccc}
+\toprule
+Máquina & Potência (MW) & Tempo de parada\\
+\midrule
+1 & 20 & 2 períodos\\
+2 & 15 & 2 períodos\\
+3 & 35 & 1 períodos\\
+4 & 40 & 1 períodos\\
+5 & 15 & 1 períodos\\
+6 & 15 & 1 períodos\\
+7 & 10 & 1 períodos\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Representação cromossomial}
+Para o desenvolvimento do problema é necessário que a informação do problema seja traduzida em uma linguagem apta para o computador manipular. Uma condição a restringir as possibilidades cromossomiais foi o número de intervalos que cada máquina poderia necessitar para realizar a sua manutenção. Considerando o ano com quatro intervalos, as máquinas poderiam variar de 1 a 3 períodos consecutivos por ano para executar sua manutenção. 
+Cada máquina possui uma sequência binária, de 4 bits. Cada bit indica o período do ano. Se o bit for igual a 0, significa que a máquina está operando normalmente naquele período. Caso o bit seja igual a 1, significa que a máquina está em manutenção neste período.
+
+\begin{table}[H]
+\caption{Possíveis representações binárias}
+\centering
+\begin{tabular}{cc}
+\toprule
+Nº paradas & Sequência binária\\
+\midrule
+1 & "0001", "0010", "0100", "1000"\\
+2 & "0011", "0110", "1100"\\
+3 & "0111", "1110"\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+O cromossomo é uma lista composta pela sequência binária de cada máquina. Outra condição a ser considerada para a validação do cromossomo é se a potência gerada por período é igual ou superior a demanda de energia daquele período.
+
+\subsection{Cálculo de aptidão}
+O cálculo de aptidão é a etapa do algoritmo genético em que se determina a qualidade de um indivíduo como soluçao do problema em questão. Cada cromossomo da populaçao é avaliado recendo um valor numérico para representar o seu grau de aptidão. Essa nota servirá de base para a etapa de seleção de pais. Dessa forma os individuos com melhor avaliação terão maior probabilidade de serem escolhidos como pais para a próxima geração de cromossomos. Para o problema tratado nesse artigo, o cálculo de aptidão foi realizado com base na equação \ref{eq:fitfunc}.
+\begin{equation}
+\label{eq:fitfunc}
+fit(x) = 100 / \sigma (NPp) 
+\end{equation}
+Onde:
+\\NPp: Potência líquida por período
+\\Sigma: Desvio padrão
+
+
+\subsection{Elitismo}
+Trata-se de uma modificação no módulo de população com o intuito de garantir o crescimento positivo do desempenho do AG ao decorrer das gerações. No elitismo os n melhores individuos de cada geração são preservados para a próxima geração.  Em um exemplo de aplicação de elitismo, uma população com 10 cromossomos (AG com elitismo de valor n igual a 2), a cada geração, dois dos melhores indivíduos da população são reservado. Em seguida serão selecionados 8 pais para gerarem 8 descendentes. Os individuos selecionados como elite são adicionados a população após o método de seleção completando os 10 individuos da população.
+
+\subsection{Seleção dos pais}
+A etapa de seleçao dos pais é baseado no mecanismo de seleção natural que atua sobre as espécies biológicas. Individuos de uma população que possuem maior aptidão terão maior probabilidade de se tornarem pais e consequentemente gerar descendentes que carreguem parte de sua informaçao genética. Indivíduos menos aptos também podem se tornar pais, embora a probabilidade desse evento ocorrer seja menor. Caso a possibilidade de reproduçao seja restrita apenas aos melhores indivíduos, a populaçao tenderá a ser composta de indivíduos cada vez mais semelhantes e faltará diversidade a esta população para que a evolução possa prosseguir de forma satisfatória. A tal efeito é denominado como convergência genética, podendo ser minimizado ou evitado através da seleçao equilibrada de indivíduos menos aptos da população. Existem diversos métodos de seleção propostos, tais como: seleção por roleta, seleção universal estocástica, seleção por ranking, seleção por torneio, entre outros. Para a aplicação foi utilizado o método de seleção por roleta.
+
+\subsubsection{Método da roleta viciada}
+Dada uma população de cromossomos, cada componente é avaliado de forma a determinar o seu nível de aptidão. 
+\begin{table}[H]
+\caption{Dados de uma dada população}
+\centering
+\begin{tabular}{cc}
+\toprule
+Indivíduo & Avaliação \\
+\midrule
+A & 4\\
+B & 1\\
+C & 3\\
+D & 4\\
+E & 5\\
+F & 6\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A probabilidade de seleção de cada indivíduo é determinada de acordo com o seu nível de aptidão em relação ao somatório dos níveis de aptidão de toda a população \ref{eq:ps}. 
+\begin{equation}
+%\label{eq:p_{s} = probabilidade de seleção}
+\label{eq:ps}
+ps(i) = \frac {fit(i)}{\sum\limits_{j=1}^n fit(j)} * 100
+\end{equation}
+
+Para estabelecer a probabilidade de seleção acumulada dos cromossomos da população é realizada a somatória das probabilidades de seleção do n-ésimo cromosso com a dos cromossomos anteriores conforme demonstrado na equação \ref{eq:psa}.
+\begin{equation}
+%\label{eq:p_{s} = probabilidade de seleção acumulada}
+\label{eq:psa}
+psa(i) = \sum\limits_{j=1}^i fit(j)
+\end{equation}
+
+A tabela \ref{tab:popinfo} mostra os indivíduos da população com seus valores de avaliação, probabilidade de seleção e probabilidade acumulada de seleção.
+\begin{table}[H]
+\label{tab:popinfo}
+\caption{Distribuiçao das probabilidades (seleção e acumulada)}
+\centering
+\begin{tabular}{ccll}
+\toprule
+Indivíduo & Avaliação & Ps (\%) & Psa (\%) \\
+\midrule
+A & 4 & 17,39 & 17,39\\
+B & 1 & 4,35 & 21,74\\
+C & 3 & 13,04 & 34,78\\
+D & 4 & 17,39 & 52,17\\
+E & 5 & 21,74 & 73,91\\
+F & 6 & 26,09 & 100,00\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A partir desses dados é possível visualizar a configuração da roleta conforme a figura \ref{fig:roleta}. Cada individuo é representado por uma fatia da roleta.
+
+\begin{figure}[H]
+\label{fig:roleta}
+  \caption{Roleta.}
+  \centering
+    \includegraphics[scale = 0.8]{roleta.png}
+\end{figure}
+
+Observa-se que os individuos com maior probabilidade de seleção, ocupam uma área maior da roleta. A probabilidade de seleção de cada indivíduo da população é distribuída em intervalos conforme a figura \ref{fig:ditrib}
+
+\begin{figure}[H]
+\label{fig:ditrib}
+  \caption{Distribuição.}
+  \centering
+    \includegraphics[scale = 1]{roleta_dist2.png}
+\end{figure}
+
+A partir dessa distribuição, um número randômico dentro do intervalo [0.00\%; 100.00\%] é gerado. Dentro os intervalos de distribuição da roleta, escolhe-se o cromossomo cujo intervalo o número gerado pertencer. O procedimento é repetido n vezes onde n é o tamanho da população.
+
+\subsubsection{Torneio}
+O método de seleção baseada em um torneio consiste em selecionar uma série de indivíduos da população para competições diretas. Os cromossomos competem diretamente, tendo como critério a função de avaliação de cada um. O cromossomo com melhor avaliação na competição é escolhido como pai. Um parâmetro para o torneio é definir o número de participantes por competição (k).
+Em um exemplo de AG tem-se a seguinte população, composta por 8 indivíduos:
+
+\begin{table}[H]
+\label{tab:popinfo}
+\caption{Exemplo de população}
+\centering
+\begin{tabular}{cc}
+\toprule
+Indivíduo & Avaliação\\
+\midrule
+A & 10\\
+B & 5\\
+C & 9\\
+D & 1\\
+E & 3\\
+F & 7\\
+G & 6\\
+H & 2\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Para um critério k com valor igual a 2, serão selecionados aleatoriamente oito duplas. De cada dupla será reservado o indivíduo com função de avaliação superior.
+
+\begin{figure}[H]
+\label{fig:torneio}
+  \caption{Exemplo de torneio.}
+  \centering
+    \includegraphics[scale = 0.5]{torneio.png}
+\end{figure}
+
+A partir dos indivíduos selecionados por torneio, é que se efetua o processo de cruzamento.
+
+\subsection{Cruzamento (Crossover)}
+Crossover é um operador genético usado para reprogramar a configuração de um cromossomo de uma geração para a próxima. Este operador é análogo à reprodução biológica de forma a promover a recombinação genética de duas ou mais soluções progenitoras e consequentemente gerando uma solução descendente. Existem diferentes técnicas de recombinação: com um ponto, com dois pontos,"corta e emenda", uniforme, metade uniforme, com três progenitores, cromossomos ordenados, tendenciosa, entre outras.
+
+\subsubsection{Crossover de um ponto}
+Para a aplicação foi utilizada a ténica de recombinação de um ponto. Nesta técnica um único ponto para recombinação é selecionado randomicamente para os cromossomos progenitores. Todos os genes a partir deste ponto são trocados entre os cromossomos. Os organismos resultantes são os filhos. A figura \ref{fig:c1p} ilustra um cruzamento de um ponto.
+
+\begin{figure}[H]
+\label{fig:c1p}
+  \caption{Cruzamento de um ponto.}
+  \centering
+    \includegraphics[scale = 0.9]{crossover_onepoint.png}
+\end{figure}
+
+Entretanto existe a possibilidade de os pais não realizarem a recombinação. Isto ocorre porque existe uma probabilidade de cruzamento (Pc) a ser considerada inicialmente. Um valor de Pc é definido nas configurações do AG antes do algoritmo ser iniciado. Para cada cromossomo parental é gerado um valor randômico (random) variando entre [0\%; 100\%]. Se a variável random possuir um valor menor ou igual ao valor de Pc, o cruzamento é efetuado. Caso contrário, os individuos não efetuam o cruzemento mantendo suas características para a próxima geração.
+
+\subsection{Mutação}
+A mutação é um operador genético utilizado para manter a diversidade gênica de uma geração de cromossomos para a próxima. É análoga à mutação presente nos sistemas biológicos. Este operador pode alterar um ou mais genes de um cromossomo. De maneira semelhante à etapa de cruzamento, a mutação possui uma probabilidade associada (Pm), que define a chance de tal processo ocorrer em um determinado momento. Um variável randômica, pertencente ao intervalo [0\%; 100\%], é gerada. Se o valor dessa variável for inferior ou igual à Pm, a mutação ocorre. Se for superior, a operação não é realizada e o cromossomo mantém suas características sem alterações.
+Existem diferentes tipos de mutação: inversão de um único bit, inversão de todos os bits do cromossomo, por limites, não uniforme, uniforme, gaussiana. Para a aplicação optou-se pelo método de inversão de um único bit.
+
+\begin{figure}[H]
+\label{fig:mut}
+  \caption{Mutação: inversão de um único bit}
+  \centering
+    \includegraphics[scale = 0.9]{mutation.png}
+\end{figure}
+
+%------------------------------------------------
+
+\section{Resultados}
+Para a aplicação foi elaborado um formulário (\ref {fig:interface}) que possibilita ao usuário configurar os seguintes parâmetros da aplicação:
+\begin{enumerate}
+\item Demanda de potência por período
+\item Potência gerada por cada máquina
+\end{enumerate}
+
+\begin{figure}[H]
+\label{fig:interface}
+  \caption{Tela de configuração do AG.}
+  \centering
+    \includegraphics[scale = 0.6]{interface_config.png}
+\end{figure}
+
+Ao inicializar o algoritmo genético, a interface mostra o estado de funcionamento de cada máquina a cada período, na forma de uma matriz de luzes. As colunas da matriz representam cada período de atividade enquanto que as linhas da matriz representam cada máquina.  A luz verde indica que a máquina está operando normalmente durante aquele período. A luz vermelha indica que a máquina está parada para manutenção.
+\begin{figure}[H]
+\label{fig:interface_machinestate}
+  \caption{Estado de cada máquina.}
+  \centering
+    \includegraphics[scale = 0.6]{interface_machinestate.png}
+\end{figure}
+
+Após o processamento do algoritmo genético a interface disponibiliza o estado das máquinas da melhor solução da última geração do AG.
+\begin{figure}[H]
+\label{fig:interface_ga}
+  \caption{Interface da aplicação.}
+  \centering
+    \includegraphics[scale = 0.35]{interface_ga.png}
+\end{figure}
+
+
+\section{Discussão}
+O emprego do algoritmo genético para gerar soluções em problemas do tipo "scheduling" mostrou-se eficiente, haja visto que o aplicativo desenvolvido apresentou soluções adequadas. O programa foi desenvolvido de maneira flexível, permitindo que o usuário ajuste o problema para outros casos com diferentes características (valores de potência gerada por máquina e demana de energia ajustáveis).
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+
+\bibitem[Linden, 2006]{Linden:2006dg}
+Linden, R. (2006).
+\newblock Algoritmos Genéticos - Uma importante ferramenta da Inteligência Computacional.
+ 
+\end{thebibliography}
+
+%----------------------------------------------------------------------------------------
+
+\end{multicols}
+
+\end{document}
