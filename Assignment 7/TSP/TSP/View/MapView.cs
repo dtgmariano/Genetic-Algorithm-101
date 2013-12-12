@@ -61,7 +61,7 @@ namespace GA
             myGA.beginStep();
             myGA.elitismStep();
             myGA.selectionStep();
-            myGA.crossoverStep();
+            //myGA.crossoverStep();
 
             richTextBox1.Clear();
             richTextBox2.Clear();

@@ -195,7 +195,7 @@ namespace GA
         #endregion
 
         #region Crossover Methods
-        public void crossoverStep()
+        public void onepointCrossover()
         {
             double dice;
 
@@ -245,7 +245,7 @@ namespace GA
             
             while (stopCondition <= 100000)
             {
-                int crossoverpoint = random.Next(0, A.code.Count());
+                int crossoverpoint = this.random.Next(0, A.code.Count());
                 newCode.Clear();
 
                 for (int i = 0; i < crossoverpoint; i++)
@@ -268,31 +268,38 @@ namespace GA
             return newOffspring;
         }
 
-        public List<Chromossome> PMX(List<Chromossome>_parents, Random _random)
+        public void pmxCrossover()
         {
-            List<Chromossome> offsprings = new List<Chromossome>();
+            //List<Chromossome> offsprings = new List<Chromossome>();
 
-            List<City> code_pa = _parents[0].code;
-            List<City> code_pb = _parents[1].code;
-            List<City> code_oa = new List<City>();
-            List<City> code_ob = new List<City>();
+            //List<City> code_pa = _parents[0].code;
+            //List<City> code_pb = _parents[1].code;
+            //List<City> code_oa;
+            //List<City> code_ob;
 
-            /*Randomly generates two cutoff points*/
-            List<int> points = new List<int>();
-            points.Add(_random.Next(0, code_pa.Count()));
-            points.Add(_random.Next(0, code_pa.Count()));
-            while (points[0] == points[1])
-            {
-                points.Clear();
-                points.Add(_random.Next(0, code_pa.Count()));
-                points.Add(_random.Next(0, code_pa.Count()));
-            }
-            points.Sort();
-            
-            
-            
+            ///*Randomly generates two cutoff points*/
+            //List<int> points = new List<int>();
+            //points.Add(this.random.Next(0, code_pa.Count()));
+            //points.Add(this.random.Next(0, code_pa.Count()));
+            //while (points[0] == points[1])
+            //{
+            //    points.Clear();
+            //    points.Add(this.random.Next(0, code_pa.Count()));
+            //    points.Add(this.random.Next(0, code_pa.Count()));
+            //}
+            //points.Sort();
 
-            return offsprings;
+            //code_oa = code_pb.GetRange(points[0], points[1] - points[0]);
+            //code_ob = code_pa.GetRange(points[0], points[1] - points[0]);
+
+            //return offsprings;
+        }
+
+        public List<City> pmxProcedure(List<City> parentA, List<City> parentB, List<int> cutOffPoints)
+        {
+            List<City> offspringB = parentA.GetRange(cutOffPoints[0], cutOffPoints[1] - cutOffPoints[0]);
+
+            return offspringB;
         }
 
         public bool validateChromossomeCode(List<City> _code)
