@@ -13,14 +13,7 @@ namespace GA
         public static List<int> firstChild(Random _random)
         {
             List<int> genes = new List<int>();
-            bool validation = false;
-
-            while (!validation)
-            {
-                genes = generateGenes(_random);
-                validation = ValidatesGene(genes);
-            }
-
+            genes = generateGenes(_random);
             return genes;
         }
 
