@@ -65,13 +65,16 @@ namespace GA
 
         public void crossoverProcedure()
         {
-            //this.offsprings = CrossoverStrategy.OneGen(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
-            this.offsprings = CrossoverStrategy.OnePoint(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
+            this.offsprings = CrossoverStrategy.OneGen(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
+            //this.offsprings = CrossoverStrategy.OnePoint(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
+            //this.offsprings = CrossoverStrategy.TwoPoints(this.parents, this.selectionSize, this.probabilityCrossover, this.random);        
         }
 
         public void mutationProcedure()
         {
-            this.mutants = MutationStrategy.Swap(this.offsprings, this.probabilityMutation, this.random);
+            //this.mutants = MutationStrategy.Swap(this.offsprings, this.probabilityMutation, this.random);
+            //this.mutants = MutationStrategy.Rand(this.offsprings, this.probabilityMutation, this.random);
+            this.mutants = MutationStrategy.Naka(this.offsprings, this.probabilityMutation, this.random);
         }
 
         public void updtadeProcedure()

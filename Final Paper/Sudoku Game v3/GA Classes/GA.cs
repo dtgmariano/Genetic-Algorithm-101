@@ -59,8 +59,8 @@ namespace GA
 
         public void selectionProcedure()
         {
-            this.parents = SelectionStrategy.RouletteWheel(this.population, this.selectionSize, this.random);
-            //this.parents = SelectionStrategy.Tournament(this.population, this.selectionSize, this.tournamentSize, this.random);
+            //this.parents = SelectionStrategy.RouletteWheel(this.population, this.selectionSize, this.random);
+            this.parents = SelectionStrategy.Tournament(this.population, this.selectionSize, this.tournamentSize, this.random);
         }
 
         public void crossoverProcedure()

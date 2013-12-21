@@ -32,31 +32,50 @@ namespace GA
                     vector[(3 * (i + 2 * (i - (i % 3)))) + (3 * (j - (j % 3))) + (j % 3)] = genes[i][j];
             }
 
-            /* Test to check the operation!!
-             * Console.WriteLine("test");
-            Console.WriteLine("Genes");
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    Console.Write(genes[i][j] + " ");
-                }
-                Console.WriteLine();
-            }
+            ////Test to check the operation!!
+            //Console.WriteLine("test");
+            //Console.WriteLine("Genes");
+            //for (int i = 0; i < 9; i++)
+            //{
+            //    for (int j = 0; j < 9; j++)
+            //    {
+            //        Console.Write(genes[i][j] + " ");
+            //    }
+            //    Console.WriteLine();
+            //}
 
-            Console.WriteLine();
-            Console.WriteLine("Vector");
+            //Console.WriteLine();
+            //Console.WriteLine("Vector");
 
-            for (int i = 0; i < 81; i++)
-            {
-                Console.Write(vector[i] + " ");
-                if ((i + 1) % 9 == 0)
-                    Console.WriteLine();
-            }*/
+            //for (int i = 0; i < 81; i++)
+            //{
+            //    Console.Write(vector[i] + " ");
+            //    if ((i + 1) % 9 == 0)
+            //        Console.WriteLine();
+            //}
 
             List<int> lvector = vector.ToList<int>();
             return lvector;
         }
+
+        //public static List<List<int>> generateUspace(Random _random)
+        //{
+        //    List<List<int>> Uspace = new List<List<int>>();
+
+        //    for (int i = 0; i < 1000; i++)
+        //    {
+        //        List<int> squareSample = generateSquare(_random);
+
+        //        for (int j = 0; j < Uspace.Count(); j++)
+        //        {
+        //            if(squareSample[j] == 
+        //        }
+
+        //    }
+            
+
+        //    return Uspace;
+        //}
 
         public static List<int> generateSquare(Random _random)
         {
@@ -90,6 +109,30 @@ namespace GA
 
         }
 
+        public static double calculateFitness2(List<List<int>> _genes)
+        {
+            List<int> matrix = generateMatrix(_genes);
+            double fitness = 0.0;
+            int numMissingDigits=0;
+
+            for (int i = 0; i < size; i++)
+            {
+                calculateNumberMissingDigits(matrix.GetRange(i * size, size));
+            }
+
+            return fitness;
+        }
+
+        public static int calculateNumberMissingDigits(List<int> list)
+        {
+            HashSet<int> myRange = new HashSet<int>(Enumerable.Range(0, 10));
+            myRange.ExceptWith(list);
+
+            return myRange.Count();
+        }
+
+
+
         public static double calculateFitness(int penaltyScore)
         {
             return (100.0 / penaltyScore);
@@ -105,7 +148,7 @@ namespace GA
                 penaltyScore += CalcLinePenalty(matrix, i);
                 penaltyScore += CalcColumnPenalty(matrix, i);
             }
-
+            
             return penaltyScore;
         }
 
@@ -114,10 +157,9 @@ namespace GA
             List<int> testList = new List<int>();
             int sum = 0;
 
-            for (int i = 0; i < size; i++)
+            for (int i = (9*lineIndex); i < (9*lineIndex + size); i++)
             {
-                int index = lineIndex * size + i;
-                int value = _gene[index];
+                int value = _gene[i];
 
                 bool containsItem = testList.Any(item => item == value);
 
@@ -126,6 +168,7 @@ namespace GA
                 else
                     sum++;
             }
+            //Console.WriteLine("Line   " + lineIndex + ": " + sum + " errors");
             return sum;
         }
 
@@ -134,7 +177,7 @@ namespace GA
             List<int> testList = new List<int>();
             int sum = 0;
 
-            for (int i = columnIndex; i < size; i += size)
+            for (int i = columnIndex; i < area; i += size)
             {
                 int value = _gene[i];
                 bool containsItem = testList.Any(item => item == value);
@@ -144,6 +187,7 @@ namespace GA
                 else
                     sum++;
             }
+            //Console.WriteLine("Column " + columnIndex + ": " + sum + " errors");
             return sum;
         }
 

@@ -36,7 +36,7 @@ namespace GA
             return Math.Round(Math.Sqrt(Variance(sampleList)), Rounding);
         }
 
-        public static double Value_Average(List<Chromossome> sampleList)
+        public static double Value_Average(List<Individual> sampleList)
         {
             double sum = 0;
 
@@ -46,7 +46,7 @@ namespace GA
             return Math.Round(sum / sampleList.Count, Rounding);
         }
 
-        public static double Value_Variance(List<Chromossome> sampleList)
+        public static double Value_Variance(List<Individual> sampleList)
         {
             double sum = 0;
 
@@ -58,7 +58,7 @@ namespace GA
             return Math.Round((sum / (sampleList.Count() - 1)), Rounding);
         }
 
-        public static double Value_StandardDeviation(List<Chromossome> sampleList)
+        public static double Value_StandardDeviation(List<Individual> sampleList)
         {
             return Math.Round(Math.Sqrt(Value_Variance(sampleList)), Rounding);
         }
@@ -90,11 +90,11 @@ namespace GA
         //    return Math.Round(Math.Sqrt(FuncValue_Variance(sampleList)), Rounding);
         //}
 
-        public static Chromossome getTheBestChromossome(List<Chromossome> _population)
+        public static Individual getTheBestChromossome(List<Individual> _population)
         {
-            Chromossome champ;
+            Individual champ;
 
-            List<Chromossome> candidates = new List<Chromossome>();
+            List<Individual> candidates = new List<Individual>();
             List<double> candidates_fitness = new List<double>();
 
             for (int i = 0; i < _population.Count(); i++)
@@ -107,7 +107,7 @@ namespace GA
             Array acandidates_fitness = candidates_fitness.ToArray();
             Array.Sort(acandidates_fitness, acandidates);
 
-            candidates = acandidates.OfType<Chromossome>().ToList();
+            candidates = acandidates.OfType<Individual>().ToList();
             candidates.Reverse();
             champ = candidates[0];
 

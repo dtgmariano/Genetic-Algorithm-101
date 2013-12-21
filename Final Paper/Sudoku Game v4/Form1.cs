@@ -37,7 +37,26 @@ namespace GA
             ga = new GA(ps, ng, pc, pm, ep, new Random());
             ga.populateProcedure();
 
+            ////Test to check the operation!!
+            //Console.WriteLine("test");
+            //Console.WriteLine("Genes");
+            //for (int i = 0; i < 9; i++)
+            //{
+            //    for (int j = 0; j < 9; j++)
+            //    {
+            //        Console.Write(ga.champion.gene[i][j] + " ");
+            //    }
+            //    Console.WriteLine();
+            //}
+
+            //Console.WriteLine("Vector");
             vectorChampion = ChromossomeStrategy.generateMatrix(ga.champion.gene);
+            //for (int i = 0; i < 81; i++)
+            //{
+            //    Console.Write(vectorChampion[i] + " ");
+            //    if ((i + 1) % 9 == 0)
+            //        Console.WriteLine();
+            //}
 
             richTextBox1.Clear();
             for (int i = 0; i < 81; i++)

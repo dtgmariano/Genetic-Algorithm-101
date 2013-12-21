@@ -13,7 +13,7 @@ namespace GA
    {
         Random random;
         GA myGA;
-        Chromossome myChromossome;
+        Individual myChromossome;
         int count;
 
         public TestView()

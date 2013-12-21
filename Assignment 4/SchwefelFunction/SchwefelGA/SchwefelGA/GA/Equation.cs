@@ -9,7 +9,7 @@ namespace GA
     {
         public static double Fxy(double x, double y)
         {
-            return ((x * Math.Sin(Math.Abs(x))) + (y * Math.Sin(Math.Abs(y))));
+            return ((-x * Math.Sin(Math.Sqrt(Math.Abs(x)))) + (-y * Math.Sin(Math.Sqrt(Math.Abs(y)))));
         }
     }
 }

@@ -66,7 +66,7 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Algoritmo genético básico para otimização de soluções em um problema de busca do valor máximo de uma função}} % Article title
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Algoritmo genético básico para otimização de soluções em um problema de busca do valor mínimo da função de Schwefel}} % Article title
 
 \author{
 \large
@@ -92,7 +92,7 @@
 
 \begin{abstract}
 \noindent
-Algoritmo genético é uma heurística de busca que simula o processo de evolução das espécies observado em sistemas biológicos
+Algoritmo genético é uma heurística de busca que simula o processo de evolução das espécies observado em sistemas biológicos. A aplicação vigente consiste no desenvolvimento de um algoritmo genético para encontrar o valor mínimo da função de Schwefel.
 \end{abstract}
 
 %----------------------------------------------------------------------------------------
@@ -137,18 +137,26 @@ O artigo vigente apresentará os princípios básicos de um algoritmo genético 
 
 \begin{equation}
 \label{eq:probfunc}
-f(x) = x*sin(x/5)
+f(x,y) = (-x*sin(\sqrt(|x|))) + (- y*sin(\sqrt(|y|)))
 \end{equation}
 
-A função \ref{eq:probfunc} é uma função senoidal, possuindo diversos mínimos e máximos locais. Para o problema foi determinado o domínio [0, 500] para valores que x pode assumir.
+A função \ref{eq:probfunc} é uma função tridimensional, possuindo diversos mínimos e máximos locais. Para o problema foi determinado o domínio [0, 500] para valores que x e y podem assumir.
 
 \subsection{Representação cromossomial}
 Para o desenvolvimento do problema é necessário que a informação do problema seja traduzida em uma linguagem apta para o computador manipular. Para o problema vigente foi utilizado a representação binária, que consiste em um cromossomo composto por uma sequência de bits. Cada gene do cromossomo representa um bit, podendo assumir como valores 0 e 1. Para determinar o tamanho do cromossomo foi calculado o número de bits necessário para representar o domínio do problema.
+
 \begin{equation}
 \label{eq:Funçao do problema}
 N_{bits} = ( \log_2 R_{max} - R_{min} ) + G
 \end{equation}
 A variável G esta associada à granularidade do problema. A medida que o valor de G é incrementado, mais ampla se torna a representaçao das variáveis do problema. Um gene possui probabilidade equivalente de admitir os valores 0 e 1 (50\% cada).
+Como a equação do problema tem como entrada duas variáveis - X e Y - foi criado um cromossomo de tamanho 2*N, onde os primeiros N bits do cromossomo representam o valor da variável X e os últimos N bits representam o valor da variável Y.
+Para uma representaçao de 10 bits, com x = 23 e y = 37, teríamos o seguinte cromossomo:
+\begin{figure}[H]
+  \caption{Representação cromossomial para o problema.}
+  \centering
+    \includegraphics[scale = 1]{chrom_represent_schwefel.png}
+\end{figure}
 
 \subsection{Cálculo de aptidão}
 O cálculo de aptidão é a etapa do algoritmo genético em que se determina a qualidade de um indivíduo como soluçao do problema em questão. Cada cromossomo da populaçao é avaliado recendo um valor numérico para representar o seu grau de aptidão. Essa nota servirá de base para a etapa de seleção de pais. Dessa forma os individuos com melhor avaliação terão maior probabilidade de serem escolhidos como pais para a próxima geração de cromossomos. Para o problema tratado nesse artigo, o cálculo de aptidão foi realizado com base na equação \ref{eq:fitfunc}.
@@ -221,7 +229,7 @@ A partir desses dados é possível visualizar a configuração da roleta conform
 \label{fig:roleta}
   \caption{Roleta.}
   \centering
-    \includegraphics[scale = 0.8]{roleta.png}
+    \includegraphics[scale = 0.7]{roleta.png}
 \end{figure}
 
 Observa-se que os individuos com maior probabilidade de seleção, ocupam uma área maior da roleta. A probabilidade de seleção de cada indivíduo da população é distribuída em intervalos conforme a figura \ref{fig:ditrib}
@@ -230,10 +238,14 @@ Observa-se que os individuos com maior probabilidade de seleção, ocupam uma á
 \label{fig:ditrib}
   \caption{Distribuição.}
   \centering
-    \includegraphics[scale = 1]{roleta_dist2.png}
+    \includegraphics[scale = 0.8]{roleta_dist2.png}
 \end{figure}
 
 A partir dessa distribuição, um número randômico dentro do intervalo [0.00\%; 100.00\%] é gerado. Dentro os intervalos de distribuição da roleta, escolhe-se o cromossomo cujo intervalo o número gerado pertencer. O procedimento é repetido n vezes onde n é o tamanho da população.
+
+\subsubsection{Ranking}
+A seleção por ranking é um método de seleção que evita a convergência prematura e a dominância de um superindi-víduo. O seu principio consiste em ordenar todos os ele-mentos de acordo com a sua função de avaliação e usar este ranking como base da seleção, ao invés de usar diretamente o valor da avaliação. Uma vez definidos os novos valores de avaliação destes indivíduos, um método tradicional, tal como o da roleta vi-ciada, pode ser utilizado para a escolha dos pais que serão submetidos aos operadores genéticos.
+
 
 \subsubsection{Torneio}
 O método de seleção baseada em um torneio consiste em selecionar uma série de indivíduos da população para competições diretas. Os cromossomos competem diretamente, tendo como critério a função de avaliação de cada um. O cromossomo com melhor avaliação na competição é escolhido como pai. Um parâmetro para o torneio é definir o número de participantes por competição (k).
@@ -265,7 +277,7 @@ Para um critério k com valor igual a 2, serão selecionados aleatoriamente oito
 \label{fig:torneio}
   \caption{Exemplo de torneio.}
   \centering
-    \includegraphics[scale = 0.5]{torneio.png}
+    \includegraphics[scale = 0.47]{torneio.png}
 \end{figure}
 
 A partir dos indivíduos selecionados por torneio, é que se efetua o processo de cruzamento.
@@ -274,7 +286,7 @@ A partir dos indivíduos selecionados por torneio, é que se efetua o processo d
 Crossover é um operador genético usado para reprogramar a configuração de um cromossomo de uma geração para a próxima. Este operador é análogo à reprodução biológica de forma a promover a recombinação genética de duas ou mais soluções progenitoras e consequentemente gerando uma solução descendente. Existem diferentes técnicas de recombinação: com um ponto, com dois pontos,"corta e emenda", uniforme, metade uniforme, com três progenitores, cromossomos ordenados, tendenciosa, entre outras.
 
 \subsubsection{Crossover de um ponto}
-Para a aplicação foi utilizada a ténica de recombinação de um ponto. Nesta técnica um único ponto para recombinação é selecionado randomicamente para os cromossomos progenitores. Todos os genes a partir deste ponto são trocados entre os cromossomos. Os organismos resultantes são os filhos. A figura \ref{fig:c1p} ilustra um cruzamento de um ponto.
+Neste cruzmanento, um único ponto para recombinação é selecionado randomicamente para os cromossomos progenitores. Todos os genes a partir deste ponto são trocados entre os cromossomos. Os organismos resultantes são os filhos. A figura \ref{fig:c1p} ilustra um cruzamento de um ponto.
 
 \begin{figure}[H]
 \label{fig:c1p}
@@ -285,9 +297,28 @@ Para a aplicação foi utilizada a ténica de recombinação de um ponto. Nesta 
 
 Entretanto existe a possibilidade de os pais não realizarem a recombinação. Isto ocorre porque existe uma probabilidade de cruzamento (Pc) a ser considerada inicialmente. Um valor de Pc é definido nas configurações do AG antes do algoritmo ser iniciado. Para cada cromossomo parental é gerado um valor randômico (random) variando entre [0\%; 100\%]. Se a variável random possuir um valor menor ou igual ao valor de Pc, o cruzamento é efetuado. Caso contrário, os individuos não efetuam o cruzemento mantendo suas características para a próxima geração.
 
-\subsubsection{Crossover uniforme}
-
 \subsubsection{Crossover de dois pontos}
+Este cruzamento é semelhante ao cruzamento de um ponto, embora sejam selecionados dois pontos para recombinação. O conteúdo genético delimitado por estes pontos é trocado dos cromossomos progenitores para os cromossomos descendentes. Os demais alelos fora deste intervalo são preservados. A figura \ref{fig:c1p} ilustra o cruzamento de dois pontos.
+\begin{figure}[H]
+\label{fig:mut}
+  \caption{Cruzamento de dois pontos.}
+  \centering
+    \includegraphics[scale = 0.9]{crossover_twopoints.png}
+\end{figure}
+
+\subsubsection{Crossover uniforme}
+Para cada gene é sorteado um número 0 ou 1. Se o valor sorteado for igual a 1, o primeiro filho recebe o gene da mesma posição do primeiro pai (de maneira idêntica o segundo filho recebe o gene da mesma posição do segundo pai). Se o valor sorteado for 0, as atribuições serão invertidas: o primeiro filho recebe o gene da posição corrente do segundo pai e o segundo filho recebe o gene corrente do primeiro pai.
+
+
+\begin{figure}[H]
+\label{fig:mut}
+  \caption{Cruzamento uniforme.}
+  \centering
+    \includegraphics[scale = 0.75]{crossover_uniform.png}
+\end{figure}
+
+O crossover uniforme é uma alternativa ao crossover de dois pontos. Enquanto este último possui uma maior probabilidade de seperar partes do cromossomo de grande cromossomo durante o cruzamento, o cruzamento uniforme tende a conservar esquemas longos com a mesma probabilidade que preserva esquemas de menor comprimento, desde que ambos tenham a mesma ordem. Por outro lado, devido ao fato de fazer um sorteio para cada posiçao, este cruzamento tem uma grande possibilidade de estragar todo e qualquer esquema, mas em média o seu desempenho é superior ao cruzamento de um ponto e ao cruzamento de dois pontos.
+
 
 \subsection{Mutação}
 A mutação é um operador genético utilizado para manter a diversidade gênica de uma geração de cromossomos para a próxima. É análoga à mutação presente nos sistemas biológicos. Este operador pode alterar um ou mais genes de um cromossomo. De maneira semelhante à etapa de cruzamento, a mutação possui uma probabilidade associada (Pm), que define a chance de tal processo ocorrer em um determinado momento. Um variável randômica, pertencente ao intervalo [0\%; 100\%], é gerada. Se o valor dessa variável for inferior ou igual à Pm, a mutação ocorre. Se for superior, a operação não é realizada e o cromossomo mantém suas características sem alterações.
@@ -345,44 +376,10 @@ O outro objeto é um gráfico de performance do AG. Para cada geração (eixo x)
     \includegraphics[scale = 0.47]{performance_curve.png}
 \end{figure}
 
-Para realizar uma análise mais detalhada do problema foi desenvolvido um outro módulo para a aplicação. Neste módulo o usuário determina os parâmetros do AG (Tamanho da população, número de gerações, probabilidade de cruzamento, probabilidade de mutação, limites de valores, resolução do cromossomo) e  o número de simulações para resolver o problema. Para cada simulação algumas informações como a melhor solução, média e desvio padrão populacional, são salvas em uma planilha. Com este módulo foi realizado os seguintes testes: Foram efetuadas 100 repetições do processamento do AG do problema, para diferentes números de gerações: 4, 8, 12, 16, 20 e 50.
-
-\begin{table}[H]
-\label{tab:popinfo}
-\caption{Distribuição das probabilidades (seleção e acumulada)}
-\centering
-\begin{tabular}{ccc}
-\toprule
-PS & Tamanho da população & 50\\
-Pc & Probabilidade de Cruzamento & 60\%\\
-Pm & Probabilidade de Mutação & 1\%\\
-Rmin & Limite mínimo & 0\\
-Rmax & Limite máximo & 512\\
-G & Resolução & 1\\
-NR & Número de repetições & 100\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Após os testes, foram separados o melhor cromossomo e o desvio padrão entre as repetições para uma das diferentes condições de números de gerações do AG.
-
-\begin{figure}[H]
-\label{fig:t1}
-  \caption{Avaliação do melhor cromossomo.}
-  \centering
-    \includegraphics[scale = 0.7]{test_aval1.png}
-\end{figure}
-
-\begin{figure}[H]
-\label{fig:t2}
-  \caption{Desvio padrão populacional.}
-  \centering
-    \includegraphics[scale = 0.7]{test_aval2.png}
-\end{figure}
 %------------------------------------------------
 
 \section{Discussion}
-Foi possível analisar em (\ref{fig:t1}) que com apenas 4 gerações o AG foi capaz de encontrar a melhor solução para o problema, haja visto que as repetições para 8, 12, 16, 20 e 50 números de gerações encontraram a mesma solução. Com relação ao desvio padrão populacional, pode-se concluir que quanto maior for o número de gerações do AG, menor será o desvio padrão da sua população. A medida que os processos de seleção e reprodução acontecem, a população elimina os indivíduos de menor avaliação em detrito dos de melhor avaliação. 
+
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
