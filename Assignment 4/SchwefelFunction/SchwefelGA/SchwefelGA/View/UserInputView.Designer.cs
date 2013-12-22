@@ -29,18 +29,12 @@
         private void InitializeComponent()
         {
             this.gbParameters1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.numNG = new System.Windows.Forms.NumericUpDown();
             this.lb2 = new System.Windows.Forms.Label();
             this.numPS = new System.Windows.Forms.NumericUpDown();
             this.lb1 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numRMax = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numRMin = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.cbSelection = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -60,22 +54,16 @@
             this.tbPm = new System.Windows.Forms.TrackBar();
             this.tbPc = new System.Windows.Forms.TrackBar();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.lbPm = new System.Windows.Forms.Label();
             this.lbPc = new System.Windows.Forms.Label();
-            this.tbRes = new System.Windows.Forms.TrackBar();
-            this.lbRes = new System.Windows.Forms.Label();
+            this.lbPm = new System.Windows.Forms.Label();
             this.gbParameters1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPS)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRMin)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbElitism)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbPm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbPc)).BeginInit();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbRes)).BeginInit();
             this.SuspendLayout();
             // 
             // gbParameters1
@@ -91,26 +79,6 @@
             this.gbParameters1.TabIndex = 0;
             this.gbParameters1.TabStop = false;
             this.gbParameters1.Text = "Population";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(23, 79);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 26);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Mutation";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(7, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 26);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Crossover";
             // 
             // numNG
             // 
@@ -158,88 +126,25 @@
             this.lb1.TabIndex = 0;
             this.lb1.Text = "Population size:";
             // 
-            // groupBox1
+            // label2
             // 
-            this.groupBox1.Controls.Add(this.tbRes);
-            this.groupBox1.Controls.Add(this.lbRes);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.numRMax);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.numRMin);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 270);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(305, 127);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Chromossome";
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(23, 79);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(95, 26);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Mutation";
             // 
-            // label4
+            // label1
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 75);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(115, 26);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Resolution";
-            // 
-            // numRMax
-            // 
-            this.numRMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numRMax.Location = new System.Drawing.Point(203, 31);
-            this.numRMax.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.numRMax.Minimum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            -2147483648});
-            this.numRMax.Name = "numRMax";
-            this.numRMax.Size = new System.Drawing.Size(78, 32);
-            this.numRMax.TabIndex = 3;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(150, 33);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 26);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Max";
-            // 
-            // numRMin
-            // 
-            this.numRMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numRMin.Location = new System.Drawing.Point(60, 31);
-            this.numRMin.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.numRMin.Minimum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            -2147483648});
-            this.numRMin.Name = "numRMin";
-            this.numRMin.Size = new System.Drawing.Size(78, 32);
-            this.numRMin.TabIndex = 1;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(7, 33);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(47, 26);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Min";
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(7, 31);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(111, 26);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Crossover";
             // 
             // cbSelection
             // 
@@ -321,7 +226,7 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(12, 403);
+            this.groupBox2.Location = new System.Drawing.Point(12, 270);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(338, 277);
             this.groupBox2.TabIndex = 10;
@@ -402,7 +307,7 @@
             // btGo
             // 
             this.btGo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btGo.Location = new System.Drawing.Point(12, 686);
+            this.btGo.Location = new System.Drawing.Point(12, 553);
             this.btGo.Name = "btGo";
             this.btGo.Size = new System.Drawing.Size(158, 68);
             this.btGo.TabIndex = 11;
@@ -413,7 +318,7 @@
             // btGoSt
             // 
             this.btGoSt.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btGoSt.Location = new System.Drawing.Point(192, 686);
+            this.btGoSt.Location = new System.Drawing.Point(176, 553);
             this.btGoSt.Name = "btGoSt";
             this.btGoSt.Size = new System.Drawing.Size(158, 68);
             this.btGoSt.TabIndex = 12;
@@ -456,17 +361,6 @@
             this.groupBox3.Text = "Probabilities";
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
-            // lbPm
-            // 
-            this.lbPm.AutoSize = true;
-            this.lbPm.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbPm.Location = new System.Drawing.Point(124, 79);
-            this.lbPm.Name = "lbPm";
-            this.lbPm.Size = new System.Drawing.Size(50, 26);
-            this.lbPm.TabIndex = 19;
-            this.lbPm.Text = "0 %";
-            this.lbPm.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // lbPc
             // 
             this.lbPc.AutoSize = true;
@@ -478,36 +372,26 @@
             this.lbPc.Text = "0 %";
             this.lbPc.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // tbRes
+            // lbPm
             // 
-            this.tbRes.Location = new System.Drawing.Point(186, 75);
-            this.tbRes.Maximum = 100;
-            this.tbRes.Name = "tbRes";
-            this.tbRes.Size = new System.Drawing.Size(95, 45);
-            this.tbRes.TabIndex = 22;
-            this.tbRes.ValueChanged += new System.EventHandler(this.tbRes_ValueChanged);
-            // 
-            // lbRes
-            // 
-            this.lbRes.AutoSize = true;
-            this.lbRes.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbRes.Location = new System.Drawing.Point(124, 75);
-            this.lbRes.Name = "lbRes";
-            this.lbRes.Size = new System.Drawing.Size(50, 26);
-            this.lbRes.TabIndex = 21;
-            this.lbRes.Text = "0 %";
-            this.lbRes.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lbPm.AutoSize = true;
+            this.lbPm.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbPm.Location = new System.Drawing.Point(124, 79);
+            this.lbPm.Name = "lbPm";
+            this.lbPm.Size = new System.Drawing.Size(50, 26);
+            this.lbPm.TabIndex = 19;
+            this.lbPm.Text = "0 %";
+            this.lbPm.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // User_Inputs_View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(367, 758);
+            this.ClientSize = new System.Drawing.Size(367, 632);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btGoSt);
             this.Controls.Add(this.btGo);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.gbParameters1);
             this.Location = new System.Drawing.Point(1, 1);
             this.Name = "User_Inputs_View";
@@ -516,10 +400,6 @@
             this.gbParameters1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNG)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPS)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numRMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numRMin)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbElitism)).EndInit();
@@ -527,7 +407,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbPc)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tbRes)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -541,12 +420,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numNG;
         private System.Windows.Forms.Label lb2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numRMax;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown numRMin;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cbSelection;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label7;
@@ -568,7 +441,5 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label lbPc;
         private System.Windows.Forms.Label lbPm;
-        private System.Windows.Forms.TrackBar tbRes;
-        private System.Windows.Forms.Label lbRes;
     }
 }

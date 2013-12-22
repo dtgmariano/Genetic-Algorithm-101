@@ -28,9 +28,9 @@ namespace GA
             numNG.Value = 20;
             tbPc.Value = 60;
             tbPm.Value = 1;
-            numRMin.Value = 0;
-            numRMax.Value = 512;
-            tbRes.Value = 0;
+            //numRMin.Value = 0;
+            //numRMax.Value = 512;
+            //tbRes.Value = 0;
             tbElitism.Value = 0;
             cbSelection.SelectedIndex = 0;
             cbCrossover.SelectedIndex = 0;
@@ -44,9 +44,9 @@ namespace GA
             ng = (int)numNG.Value;
             pc = ((int)tbPc.Value) / 100.0;
             pm = ((int)tbPm.Value) / 100.0;
-            rmin = (int)numRMin.Value;
-            rmax = (int)numRMax.Value;
-            gran = (int)tbRes.Value;
+            //rmin = (int)numRMin.Value;
+            //rmax = (int)numRMax.Value;
+            //gran = (int)tbRes.Value;
 
             selec_op = cbSelection.SelectedIndex;
             cross_op = cbCrossover.SelectedIndex;
@@ -63,20 +63,12 @@ namespace GA
 
         public void ThreadProc()
         {
-            Application.Run(new Graphic_View
-                (rmin, rmax, gran,
-                ps, ng, pc, pm,
-                hasRanking, hasElite, elite_percent,
-                selec_op, cross_op, mutant_op, optim_op));
+            Application.Run(new TestView(ps, ng, pc, pm, elite_percent));
         }
 
         public void ThreadProc2()
         {
-            Application.Run(new Statistics_View
-                (rmin, rmax, gran,
-                ps, ng, pc, pm,
-                hasRanking, hasElite, elite_percent,
-                selec_op, cross_op, mutant_op, optim_op));
+
         }
 
         private void btGo_Click(object sender, EventArgs e)
@@ -111,7 +103,7 @@ namespace GA
 
         private void tbRes_ValueChanged(object sender, EventArgs e)
         {
-            lbRes.Text = tbRes.Value + "";
+            //lbRes.Text = tbRes.Value + "";
         }
 
         private void groupBox3_Enter(object sender, EventArgs e)

@@ -66,7 +66,7 @@
 %	TITLE SECTION
 %----------------------------------------------------------------------------------------
 
-\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Algoritmo genético básico para otimização de soluções em um problema de busca do valor mínimo da função de Schwefel}} % Article title
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Algoritmo genético para resolução do problema do caixeiro viajante (TSP)}} % Article title
 
 \author{
 \large
@@ -101,7 +101,7 @@ Algoritmo genético é uma heurística de busca que simula o processo de evoluç
 
 \begin{multicols}{2} % Two-column layout throughout the main article text
 
-\section{Introduçao}
+\section{Introdução}
 
 \subsection{Algoritmos Evolucionários}
 Algoritmos evolucionários utilizam modelos computacionais baseados em processos naturais de evolução como um instrumento para a resolução de problemas. Os modelos computacionais propostos se orientam pela simulação de conceitos de evolução das espécies: seleção, mutação e reprodução. Os algoritmos evolucionários operam proporcionando a manutenção de uma população de estruturas, chamadas de indivíduos ou cromossomos. Esses indivíduos se comportam de maneira similar à evolução das espécies, sendo submetidos à operadores genéticos (recombinação e mutação).Cada cromossomo recebe uma avaliação de acordo com o nível de aptidão que este possui dentro do contexto de um problema.
@@ -124,6 +124,10 @@ Um AG pode ser dividido nas seguintes etapas:
 \item Verificação da condição parada: Enquanto a condição de parada não foi encontrada, repete-se os procedimentos do passo 2 ao 6.
 \end{enumerate}
 
+\subsection{Problema do caixeiro viajante (TSP)}
+O problema do caixeiro viajante, é um problema de otimização combinatória. Trata-se de uma dada lista de pontos a serem visitados, o problema consiste em encontrar a menor distância a ser percorrida para visitar todos os pontos, sem passar duas vezes pelo mesmo ponto.
+O problema pertence à categoria NP-Completo que o remete para um campo de complexidade exponencial, isto é, o esforço computacional necessário para a sua resolução cresce exponencialmente com o tamanho do problema. Assim, dado que é difícil, se não impossível, determinar a solução ótima desta classe de problemas, os métodos de resolução passam pelas heurísticas e afins que, do ponto de vista matemático, não asseguram a obtenção de uma solução ótima.
+
 \begin{figure}[H]
   \caption{Diagrama de blocos de um AG básico.}
   \centering
@@ -133,36 +137,32 @@ Um AG pode ser dividido nas seguintes etapas:
 %------------------------------------------------
 
 \section{Métodos}
-O artigo vigente apresentará os princípios básicos de um algoritmo genético no desenvolvido de uma aplicaçao para minimizar uma funçao multimodal. O software da aplicação foi desenvolvido na plataforma .NET, em linguagem computacional CSharp (C\#).
-
-\begin{equation}
-\label{eq:probfunc}
-f(x,y) = (-x*sin(\sqrt(|x|))) + (- y*sin(\sqrt(|y|)))
-\end{equation}
-
-A função \ref{eq:probfunc} é uma função tridimensional, possuindo diversos mínimos e máximos locais. Para o problema foi determinado o domínio [0, 500] para valores que x e y podem assumir.
+O artigo vigente apresentará a implementação de um algoritmo genético que solucione o problema do caixeiro viajante, utilizando os operadores de cruzamento CX (Cycle Crossover), PMX(Partially Matched Crossover) e o operador de mutação Swap. O software da aplicação foi desenvolvido na plataforma .NET, em linguagem computacional CSharp (C\#).
 
 \subsection{Representação cromossomial}
-Para o desenvolvimento do problema é necessário que a informação do problema seja traduzida em uma linguagem apta para o computador manipular. Para o problema vigente foi utilizado a representação binária, que consiste em um cromossomo composto por uma sequência de bits. Cada gene do cromossomo representa um bit, podendo assumir como valores 0 e 1. Para determinar o tamanho do cromossomo foi calculado o número de bits necessário para representar o domínio do problema.
+Para o desenvolvimento do problema é necessário que a informação do problema seja traduzida em uma linguagem apta para o computador manipular. Inicialmente foi gerado o espaço amostral com n cidades dispostas pelo mapa do problema. Cada cidade possui um identificador único e um par de coordenadas (x,y) que representa sua posição no mapa. O cromossomo é composto por uma lista dos identificadores de cada cidade. Um restrição do problema é que um mesmo cromossomo não pode possuir identificadores de uma mesma cidade repetidos ao longo do seu cromossomo. Por esta razão o emprego de métodos de cruzamento tradicionais como o crossover de um ponto, o crossover de dois pontos e o crossover uniforme não são adequadas, uma vez que estes operadores não restrigem a geração de descendentes que tenham informações repetidas no seu cromossomo.
+A ordem em que os identificadores das cidades são dispostos pelo cromossomo indicam o trajeto a ser seguido.
 
-\begin{equation}
-\label{eq:Funçao do problema}
-N_{bits} = ( \log_2 R_{max} - R_{min} ) + G
-\end{equation}
-A variável G esta associada à granularidade do problema. A medida que o valor de G é incrementado, mais ampla se torna a representaçao das variáveis do problema. Um gene possui probabilidade equivalente de admitir os valores 0 e 1 (50\% cada).
-Como a equação do problema tem como entrada duas variáveis - X e Y - foi criado um cromossomo de tamanho 2*N, onde os primeiros N bits do cromossomo representam o valor da variável X e os últimos N bits representam o valor da variável Y.
-Para uma representaçao de 10 bits, com x = 23 e y = 37, teríamos o seguinte cromossomo:
 \begin{figure}[H]
   \caption{Representação cromossomial para o problema.}
   \centering
-    \includegraphics[scale = 1]{chrom_represent_schwefel.png}
+    \includegraphics[scale =  0.8]{crom_rep.png}
 \end{figure}
 
+Neste exemplo, o caixeiro viajante seguirá o trajeto G -> A -> E -> B -> D -> F -> C.
+
 \subsection{Cálculo de aptidão}
-O cálculo de aptidão é a etapa do algoritmo genético em que se determina a qualidade de um indivíduo como soluçao do problema em questão. Cada cromossomo da populaçao é avaliado recendo um valor numérico para representar o seu grau de aptidão. Essa nota servirá de base para a etapa de seleção de pais. Dessa forma os individuos com melhor avaliação terão maior probabilidade de serem escolhidos como pais para a próxima geração de cromossomos. Para o problema tratado nesse artigo, o cálculo de aptidão foi realizado com base na equação \ref{eq:fitfunc}.
+O cálculo de aptidão é a etapa do algoritmo genético em que se determina a qualidade de um indivíduo como soluçao do problema em questão. Cada cromossomo da populaçao é avaliado recendo um valor numérico para representar o seu grau de aptidão. Essa nota servirá de base para a etapa de seleção de pais. Dessa forma os individuos com melhor avaliação terão maior probabilidade de serem escolhidos como pais para a próxima geração de cromossomos. Para o problema tratado nesse artigo, o cálculo de aptidão foi dado pelo inverso do somatório das distâncias entre todas as cidades ao longo do trajeto a ser percorrido pelo caixeiro viajante. 
+
+\begin{equation}
+\label{eq:distperc}
+distTotal = \sum_{i=0}^{n-1} \sqrt{|x_{i} - x_{i+1}|^2 + |y_{i} - y_{i+1}|^2}
+\end{equation}
+
+A função de avaliação é expressa por \ref{eq:fitfunc} :
 \begin{equation}
 \label{eq:fitfunc}
-fit(i) = - f(x,y)
+fit = 1/distTotal
 \end{equation}
 
 \subsection{Elitismo}
@@ -189,7 +189,6 @@ F & 6\\
 \bottomrule
 \end{tabular}
 \end{table}
-
 A probabilidade de seleção de cada indivíduo é determinada de acordo com o seu nível de aptidão em relação ao somatório dos níveis de aptidão de toda a população \ref{eq:ps}. 
 \begin{equation}
 %\label{eq:p_{s} = probabilidade de seleção}
@@ -319,16 +318,62 @@ Para cada gene é sorteado um número 0 ou 1. Se o valor sorteado for igual a 1,
 
 O crossover uniforme é uma alternativa ao crossover de dois pontos. Enquanto este último possui uma maior probabilidade de seperar partes do cromossomo de grande cromossomo durante o cruzamento, o cruzamento uniforme tende a conservar esquemas longos com a mesma probabilidade que preserva esquemas de menor comprimento, desde que ambos tenham a mesma ordem. Por outro lado, devido ao fato de fazer um sorteio para cada posiçao, este cruzamento tem uma grande possibilidade de estragar todo e qualquer esquema, mas em média o seu desempenho é superior ao cruzamento de um ponto e ao cruzamento de dois pontos.
 
+\subsubsection{Partially Matched Crossover (PMX)}
+Sugerido por Goldberg e Lingle , o PMX é um operador de cruzamento que age trocando blocos de genes entre os pais, gerando novos filhos.
+
+\begin{enumerate}
+\item Randomicamente seleciona uma porção dos alelos do pai 1 e copia essa mesma porção para o filho 1.Os alelos do filho são organizados de forma que, os alelos que estão fora zona de corte, recebem um valor '*'
+\item Procurando no mesmo segmento do Pai 2, seleciona cada valor que ainda não foi copiado para o filho 1.
+\item Para cada um desses valores:
+\begin{enumerate}
+\item Observa o index i desse valor no Pai 2. Localiza-se o valor v que encontra-se nesse no index i no Pai 1. Procura-se o valor v no Pai 2.
+\item Se o index desse valor v no Pai 2 fizer parte da porção original, retorne ao passo anterior, utilizando esse valor.
+\item Se o index desse valor v no Pai 2 não fizer parte da porção original, insira esse valor no cromossomo do filho 1 na mesma posição.
+\end{enumerate}
+\item Os valores com '*' no filho 1 recebem os valores de index correspondente do pai 2.
+\end{enumerate}
+
+A figura \ref{fig:pmx} ilustra o operador PMX.
+\begin{figure}[H]
+\label{fig:pmx}
+  \caption{PMX}
+  \centering
+    \includegraphics[scale = 0.3]{pmx_crossover.png}
+\end{figure}
+
+\subsubsection{Cycle Crossover (CX)}
+Proposto por Oliver et al. Este operador gera filhos que preservam a posição absoluta da cidades provenientes dos cromossomos pais. Ele trabalho sobre um subconjunto de cidades que ocupa um mesmo subconjunto de posições em ambos os pais. Estes pontos são copiados de um dos pais, nas mesmas posições, para um filho. As posições remanescentes são completadas com as cidades do outro pai. Assim, cada cidade e sua posição são herdadas de um dos pais. A figura \ref{fig:cx} ilustra o operador CX.
+\begin{figure}[H]
+\label{fig:cx}
+  \caption{CX}
+  \centering
+    \includegraphics[scale = 0.55]{crossover_cx.png}
+\end{figure}
 
 \subsection{Mutação}
-A mutação é um operador genético utilizado para manter a diversidade gênica de uma geração de cromossomos para a próxima. É análoga à mutação presente nos sistemas biológicos. Este operador pode alterar um ou mais genes de um cromossomo. De maneira semelhante à etapa de cruzamento, a mutação possui uma probabilidade associada (Pm), que define a chance de tal processo ocorrer em um determinado momento. Um variável randômica, pertencente ao intervalo [0\%; 100\%], é gerada. Se o valor dessa variável for inferior ou igual à Pm, a mutação ocorre. Se for superior, a operação não é realizada e o cromossomo mantém suas características sem alterações.
-Existem diferentes tipos de mutação: inversão de um único bit, inversão de todos os bits do cromossomo, por limites, não uniforme, uniforme, gaussiana. Para a aplicação optou-se pelo método de inversão de um único bit.
+A mutação é um operador genético utilizado para manter a diversidade gênica de uma geração de cromossomos para a próxima. É análoga à mutação presente nos sistemas biológicos. Este operador pode alterar um ou mais genes de um cromossomo. De maneira semelhante à etapa de cruzamento, a mutação possui uma probabilidade associada (Pm), que define a chance de tal processo ocorrer em um determinado momento. Um variável randômica, pertencente ao intervalo [0\%; 100\%], é gerada. Se o valor dessa variável for inferior ou igual à Pm, a mutação ocorre. Se for superior, a operação não é realizada e o cromossomo mantém suas características sem alterações. Existem diferentes tipos de mutação: inversão de um único bit, inversão de todos os bits do cromossomo, por limites, não uniforme, uniforme, gaussiana.
+
+\subsubsection{Mutação de um único bit}
+A mutação de um bit consiste em inverte um único bit para um outro valor. Para a aplicação do TSP, o uso dessa mutação não é adequada.
 
 \begin{figure}[H]
 \label{fig:mut}
   \caption{Mutação: inversão de um único bit}
   \centering
     \includegraphics[scale = 0.9]{mutation.png}
+\end{figure}
+
+\subsubsection{Mutação SWAP}
+A mutação swap, implementada neste trabalho, consiste basicamente na permutação de dois genes de um mesmo cromossomo. Este operador de reordenamento pode ser utilizado em problemas como o do caixeiro viajante, para prevenir a duplicação de genes, que poderia ocorrer com a mutação cartesiana.
+
+\subsubsection{Mutação inversão}
+ inversão consiste em um outro operador de reordena-mento. Neste operador, uma parte aleatória do cromossomo (situada entre dois pontos de mutação) é invertida. Esta operação é apresentada na figura \ref{fig:mutinv}
+
+\begin{figure}[H]
+\label{fig:mutinv}
+  \caption{Mutação inversão}
+  \centering
+    \includegraphics[scale = 0.7]{mutation_inversion.png}
 \end{figure}
 
 %------------------------------------------------
@@ -338,24 +383,19 @@ Para a aplicação foi elaborado um formulário (\ref {fig:userview}) que possib
 \begin{enumerate}
 \item Características do algoritmo genético:
 \begin{enumerate}
+\item número de pontos(cidades);
+\item timer;
 \item tamanho da população;
 \item número de gerações;
-\item probabilidade de cruzamento;
-\item probabilidade de mutação.
 \end{enumerate}
-\item Características do cromossomo:
-\begin{enumerate}
-\item valor mínimo;
-\item valor máximo;
-\item granularidade ou resolução.
-\end{enumerate}
+
 \end{enumerate}
 
 \begin{figure}[H]
 \label{fig:userview}
   \caption{Tela de configuração do AG.}
   \centering
-    \includegraphics[scale = 0.6]{user_view.png}
+    \includegraphics[scale = 0.8]{user_view.png}
 \end{figure}
 
 Ao inicializar o algoritmo genético, são realizadas as seguintes etapas:
@@ -368,29 +408,43 @@ Ao inicializar o algoritmo genético, são realizadas as seguintes etapas:
 \item Atualiza a população com a nova geração de individuos, composto pelos filhos do processo de reprodução e dos melhores individuos da geração anterior.
 \end{enumerate}
 
-Com o matlab foi possivel gerar a representaçao visual da função de Schweffels.
+\begin{figure}[H]
+\label{fig:tspa}
+  \caption{Solução encontrada para um TSP com 15 pontos.}
+  \centering
+    \includegraphics[scale = 0.25]{prog_tsp.png}
+\end{figure}
+
 
 \begin{figure}[H]
-\label{fig:graphicview}
-  \caption{Gráfico da função de Schwefel.}
+\label{fig:tspa}
+  \caption{População inicial do TSP com 1000 pontos.}
   \centering
-    \includegraphics[scale = 0.6]{SchwefelFunctionPlot.png}
+    \includegraphics[scale = 0.25]{prog_tsp_a.png}
 \end{figure}
+
 
 %------------------------------------------------
 
-\section{Discussion}
-O método de seleção uniforme apresentou uma performance mais adequada para encontrar melhores soluções para o problema. Com o trabalho foi possivel compreender e verificar a aplicação de AGs para resolução de funções composta por mais de uma variável.
+\section{Discussão}
+A medida em que o número de pontos foram aumentados (200, 500, 1000 pontos) o processamento do AG mostrou-se lento. O problema está associado à forma com que os métodos foram implementados na aplicação, de maneira a consumir um grande volume dos recursos computacionais disponíveis. Entretanto os operadores de cruzamento PMX e CX mostraram-se adequados para a resolução de problemas de ordenação, como o problema do TSP, uma vez que foi possivel encontrar soluções para problemas com um menor número de pontos. 
 %----------------------------------------------------------------------------------------
 %	REFERENCE LIST
 %----------------------------------------------------------------------------------------
 
 \begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
 
-\bibitem[Linden, 2006]{Linden:2006dg}
-Linden, R. (2006).
-\newblock Algoritmos Genéticos - Uma importante ferramenta da Inteligência Computacional.
+\bibitem _Linden, R. (2006).  Algoritmos Genéticos - Uma importante ferramenta da Inteligência Computacional.
+
+\bibitem D Goldberg and R. Lingle. Alleles, loci, and the traveling salesman problem. In Proceedings of the First International Conference on Genetic Algorithms and Their Applications: July 24-26, 1985 at the Carnegie-Mellon University, Pitts-burg, PA, volume 98423, page 154. Lawrence Erlbaum, 1988.
  
+\bibitem P Larranaga, C. Kuijpers, R. Murga, I. Inza, and S. Dizdare-vic. Genetic algorithms for the travelling salesman problem: A review of representations and operators. Artificial Intelli-gence Review, 13(2):129–170, 1999.
+
+\bibitem I Oliver, D. Smith, and J. Holland. A study of permutation
+crossover operators on the travelling salesman problem. In
+Genetic Algorithms and Their Applications: Proceedings of
+the 2nd International Conference on Genetic Algorithms. La-wrence Erlbaum Associates, Hilladale, NJ, 1987.
+
 \end{thebibliography}
 
 %----------------------------------------------------------------------------------------

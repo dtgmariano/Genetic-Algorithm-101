@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace GA
 {
@@ -15,64 +16,39 @@ namespace GA
         GA myGA;
         Individual myChromossome;
         int count;
+        List<double> coords;
 
-        public TestView()
+        public TestView(int _popsize,
+            int _numgenerations,
+            double _probcrossover,
+            double _probmutation,
+            double _elitism_percentage)
         {
             InitializeComponent();
             random = new Random();
+            myGA = new GA(_popsize, _numgenerations, _probcrossover, _probmutation, _elitism_percentage, random);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             richTextBox1.Clear();
-            richTextBox2.Clear();
-            richTextBox3.Clear();
-            richTextBox4.Clear();
-            richTextBox5.Clear();
-            richTextBox6.Clear();
+            myGA.populateProcedure();
+            coords = ChromossomeStrategy.calculateCoords(myGA.champion.chromossome, myGA.champion.min, myGA.champion.max, myGA.champion.res, myGA.champion.nbits);
+            //richTextBox1.AppendText("[" + coords[0] + "," + coords[1] + "] fit: " + myGA.champion.fitness.ToString()+"\n\n");
+            richTextBox1.AppendText(myGA.champion.chromossome.ToString() + "\n");
 
-            myGA = new GA(0, 16, 0, 50, 20, 1.0, 1.0, false, true, 0.1, 0, 0, 0, 1, random);
-
-            myGA.beginStep();
-            label1.Text = "beginStep";
-            for (int i = 0; i < myGA.population.Count(); i++)
-                richTextBox1.AppendText(myGA.population[i].x.ToString() + " " + myGA.population[i].y.ToString() + " " + Math.Round(myGA.population[i].fitness, 2).ToString() + "\n");
-
-            myGA.elitismStep();
-            label2.Text = "elitismStep";
-            for (int i = 0; i < myGA.elite.Count(); i++)
-                richTextBox2.AppendText(myGA.elite[i].x.ToString() + " " + myGA.elite[i].y.ToString() + " " + Math.Round(myGA.elite[i].fitness, 2).ToString() + "\n");
-
-            myGA.selectionStep();
-            label3.Text = "selectionStep";
-            for (int i = 0; i < myGA.parents.Count(); i++)
-                richTextBox3.AppendText(myGA.parents[i].x.ToString() + " " + myGA.parents[i].y.ToString() + " " + Math.Round(myGA.parents[i].fitness, 2).ToString() + "\n");
-
-            myGA.crossoverStep();
-            label4.Text = "crossoverStep " + myGA.countcrossover;
-            for (int i = 0; i < myGA.offspring.Count(); i++)
-                richTextBox4.AppendText(myGA.offspring[i].x.ToString() + " " + myGA.offspring[i].y.ToString() + " " + Math.Round(myGA.offspring[i].fitness, 2).ToString() + "\n");
-
-            myGA.mutationStep();
-            label5.Text = "mutationStep" + myGA.countmutation;
-            for (int i = 0; i < myGA.population.Count(); i++)
-                richTextBox5.AppendText(myGA.population[i].x.ToString() + " " + myGA.population[i].y.ToString() + " " + Math.Round(myGA.population[i].fitness, 2).ToString() + "\n");
-
-            myGA.updateStep();
-            label6.Text = "updateStep";
-            for (int i = 0; i < myGA.population.Count(); i++)
-                richTextBox6.AppendText(myGA.population[i].x.ToString() + " " + myGA.population[i].y.ToString() + " " + Math.Round(myGA.population[i].fitness, 2).ToString() + "\n");
+            foreach (Individual i in myGA.population)
+            {
+                coords = ChromossomeStrategy.calculateCoords(i.chromossome, i.min, i.max,i.res, i.nbits);
+                //richTextBox1.AppendText("[" + coords[0] + "," + coords[1] + "] fit: " + i.fitness.ToString() + "\n");
+                richTextBox1.AppendText(i.chromossome.ToString() + "\n");
+            }
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            count = 0;
-            myGA = new GA(0, 512, 0, 20, 10, 0.6, 0.1, false, true, 0.1, 0, 0, 0, 0, random);
-            myGA.beginStep();
-            count++;
-            for (int i = 0; i < myGA.population.Count(); i++)
-                richTextBox1.AppendText(myGA.population[i].x.ToString() + " " + myGA.population[i].y.ToString() + " " + Math.Round(myGA.population[i].fitness, 2).ToString() + "\n");
             
             timer1.Interval = 200;
             timer1.Enabled = true;
@@ -81,12 +57,24 @@ namespace GA
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            myGA.processesGA();
-            count++;
+            myGA.elitismProcedure();
+            myGA.selectionProcedure();
+            myGA.crossoverProcedure();
+            myGA.mutationProcedure();
+            myGA.updtadeProcedure();
+
             richTextBox1.Clear();
-            for (int i = 0; i < myGA.population.Count(); i++)
-                richTextBox1.AppendText(myGA.population[i].x.ToString() + " " + myGA.population[i].y.ToString() + " " + Math.Round(myGA.population[i].fitness, 2).ToString() + "\n");
-            if (count >= myGA.numgenerations)
+            coords = ChromossomeStrategy.calculateCoords(myGA.champion.chromossome, myGA.champion.min, myGA.champion.max, myGA.champion.res, myGA.champion.nbits);
+            richTextBox1.AppendText("[" + coords[0] + "," + coords[1] + "] fit: " + myGA.champion.fitness.ToString() + "\n\n");
+
+            foreach (Individual i in myGA.population)
+            {
+                coords = ChromossomeStrategy.calculateCoords(i.chromossome, i.min, i.max, i.res, i.nbits);
+                richTextBox1.AppendText("[" + coords[0] + "," + coords[1] + "] fit: " + i.fitness.ToString() + "\n");
+
+            }
+            count++;
+            if (count >= myGA.generationsNumber)
                 timer1.Enabled = false;
         }
     }
