@@ -18,16 +18,17 @@ namespace GA
         {
 
             chromossome = ChromossomeStrategy.generateGenes(_random);
-            penalty = ChromossomeStrategy.calculatePenalty(ChromossomeStrategy.generateGrid(chromossome));
+            penalty = ChromossomeStrategy.calculatePenalty(chromossome);
             fitness = ChromossomeStrategy.calculatesFitness(penalty);
         }
 
         public Individual(List<List<int>> _gene)
         {
             chromossome = _gene;
-            penalty = ChromossomeStrategy.calculatePenalty(ChromossomeStrategy.generateGrid(chromossome));
+            penalty = ChromossomeStrategy.calculatePenalty(chromossome);
             fitness = ChromossomeStrategy.calculatesFitness(penalty);
         }
+        
 
     }
 }

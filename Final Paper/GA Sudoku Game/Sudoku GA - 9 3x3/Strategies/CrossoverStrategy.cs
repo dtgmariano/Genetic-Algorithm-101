@@ -152,104 +152,156 @@ namespace GA
             }
             return offspring;
         }
-
-
-        public static List<Individual> OneGen2(List<Individual> _parents, int _selectionSize, double _crossoverProbability, Random _random)
+        
+        public static List<Individual> PMX(List<Individual> _parents, int _selectionSize, double _crossoverProbability, Random _random)
         {
             List<Individual> offsprings = new List<Individual>();
 
-            int numberLists = _parents[0].chromossome.Count(); // Count number of List<int>
+            List<List<int>> parent1, parent2;
+            List<List<int>> offspring1, offspring2;
+            List<int> cutoffPoints = new List<int>();
+            double dice;
 
-            if (_selectionSize % 2 != 0)
+            /*In case the number of parents is an odd number, one parent will be left alone. 
+             * In this case an exception handling is performed.*/
+            if (_parents.Count % 2 != 0)
             {
-                offsprings.Add(_parents[_selectionSize - 1]);
+                offsprings.Add(_parents[_parents.Count()]);
+                _parents.RemoveAt(_parents.Count());
             }
 
-            for (int i = 0; i < (_selectionSize / 2); i++)
+            for(int i=0; i<(_parents.Count/2); i++)
             {
-                //double dice = _random.NextDouble();
-                //if (dice <= _crossoverProbability)
-                //{
-                //    //Do crossover and generates offsprings
-                //}
-                //else
-                //{
-                //    //Mantain parents
-                //}
+                dice = _random.NextDouble();
 
-                int index = i * 2;
+                if (dice <= _crossoverProbability)
+                {
+                    cutoffPoints.Clear();
+                    cutoffPoints.Add(_random.Next(0, _parents[2 * i].chromossome.Count()));
+                    cutoffPoints.Add(_random.Next(0, _parents[2 * i].chromossome.Count()));
+                    while (cutoffPoints[0] == cutoffPoints[1])
+                    {
+                        cutoffPoints.Clear();
+                        cutoffPoints.Add(_random.Next(0, _parents[2 * i].chromossome.Count()));
+                        cutoffPoints.Add(_random.Next(0, _parents[2 * i].chromossome.Count()));
+                    }
+                    cutoffPoints.Sort();
 
-                List<List<int>> offspring_a_gene = new List<List<int>>(_parents[index].chromossome);
-                List<List<int>> offspring_b_gene = new List<List<int>>(_parents[index + 1].chromossome);
-                int crossoverpoint = _random.Next(0, numberLists);
-                List<int> allele = offspring_a_gene[crossoverpoint];
+                    parent1 = _parents[2 * i].chromossome;
+                    parent2 = _parents[2 * i + 1].chromossome;
 
-                offspring_a_gene[crossoverpoint] = offspring_b_gene[crossoverpoint];
-                offspring_b_gene[crossoverpoint] = allele;
-                List<Individual> candidates = new List<Individual>();
-                candidates.Add(_parents[index]);
-                candidates.Add(_parents[index + 1]);
-                candidates.Add(new Individual(offspring_a_gene));
-                candidates.Add(new Individual(offspring_b_gene));
-                List<Individual> selected = new List<Individual>(ElitismStrategy.basicElitism(candidates, 2));
-                offsprings.AddRange(selected);
+                    offspring1 = pmxProcedure(parent1, parent2, cutoffPoints);
+                    offspring2 = pmxProcedure(parent2, parent1, cutoffPoints);
+
+                    offsprings.Add(new Individual(offspring1));
+                    offsprings.Add(new Individual(offspring2));
+                }
+                else
+                {
+                    offsprings.Add(_parents[2 * i]);
+                    offsprings.Add(_parents[2 * i + 1]);
+                }
             }
-
             return offsprings;
         }
 
-        public static List<Individual> TwoPoints2(List<Individual> _parents, int _selectionSize, double _crossoverProbability, Random _random)
+        static List<List<int>> pmxProcedure(List<List<int>> _parent1, List<List<int>> _parent2, List<int> _cutoff)
         {
-            List<Individual> offspring = new List<Individual>();
+            List<List<int>> child = new List<List<int>>();
+            List<List<int>> swath_p1;
 
-            int sizeCode = _parents[0].chromossome.Count();
+            /*Step 1: Randomly select a swath of alleles from parent 1 
+             * and copy them directly to the child. Note the indexes of the segment.*/
+            swath_p1 = _parent1.GetRange(_cutoff[0], _cutoff[1] - _cutoff[0] + 1);
 
-            if (_selectionSize % 2 != 0)
+            /*Organizes child alleles. The ones that are out of the cutoff zone, receives 'null' */
+            for (int i = 0; i < _cutoff[1]; i++)
+                child.Add(null);
+            child.AddRange(swath_p1);
+            for (int i = _cutoff[2] + 1; i < _parent1.Count(); i++)
+                child.Add(null);
+
+            /*Step 2: Looking in the same segment positions in parent 2, 
+             * select each value that hasn't already been copied to the child.*/
+            for (int i = _cutoff[0]; i < _cutoff[1] + 1; i++)
             {
-                offspring.Add(_parents[_selectionSize - 1]);
-            }
+                List<int> v, valuetoinsert;
+                int idx_at_p2;
 
-            for (int i = 0; i < (_selectionSize / 2); i++)
-            {
-                int index = i * 2;
-
-                List<List<int>> offspring_a_gene = new List<List<int>>();
-                List<List<int>> offspring_b_gene = new List<List<int>>();
-
-                List<int> cp = new List<int>();
-                cp.Add(_random.Next(0, sizeCode));
-                cp.Add(_random.Next(0, sizeCode));
-
-                while (cp[0] == cp[1])
+                /*For each of these values*/
+                if (isItemRepeated(_parent2[i], child) == false)
                 {
-                    cp.Clear();
-                    cp.Add(_random.Next(0, sizeCode));
-                    cp.Add(_random.Next(0, sizeCode));
+                    /*Note the index of this value (parent2[i]) in Parent 2. Locate the value, V, 
+                     * from parent 1 in this same position. Locate this same value in parent 2.*/
+                    valuetoinsert = _parent2[i];
+                    v = _parent1[i];
+                    idx_at_p2 = getIndex(v, _parent2);
+
+                    while (is_part_of_the_original_swath(idx_at_p2, _cutoff[0], _cutoff[1]) == true)
+                    {
+                        v = _parent1[idx_at_p2];
+                        idx_at_p2 = getIndex(v, _parent2);
+                    }
+
+                    child[idx_at_p2] = valuetoinsert;
+                    /*If the index of this value in Parent 2 is part of the original swath, 
+                     * go to step i. using this value.*/
+
+                    /*If the position isn't part of the original swath, 
+                     * insert Step A's value into the child in this position.*/
                 }
-
-                cp.Sort();
-
-                offspring_a_gene.AddRange(_parents[index].chromossome.GetRange(0, cp[0]));
-                offspring_a_gene.AddRange(_parents[index + 1].chromossome.GetRange(cp[0], cp[1] - cp[0] + 1));
-                if ((cp[1] + 1) <= sizeCode)
-                    offspring_a_gene.AddRange(_parents[index].chromossome.GetRange(cp[1] + 1, sizeCode - cp[1]));
-
-                offspring_b_gene.AddRange(_parents[index + 1].chromossome.GetRange(0, cp[0]));
-                offspring_b_gene.AddRange(_parents[index].chromossome.GetRange(cp[0], cp[1] - cp[0] + 1));
-                if ((cp[1] + 1) <= sizeCode)
-                    offspring_b_gene.AddRange(_parents[index + 1].chromossome.GetRange(cp[1] + 1, sizeCode - cp[1]));
-
-                List<Individual> candidates = new List<Individual>();
-                candidates.Add(_parents[index]);
-                candidates.Add(_parents[index + 1]);
-                candidates.Add(new Individual(offspring_a_gene));
-                candidates.Add(new Individual(offspring_b_gene));
-
-                offspring.AddRange(ElitismStrategy.basicElitism(candidates, 2));
-
             }
 
-            return offspring;
-        }   
+            /*6. Now the easy part, we've taken care of all swath values, 
+             * so everything else from Parent 2 drops down to the child.*/
+            for (int i = 0; i < child.Count(); i++)
+            {
+                if (Comparable.AreEqual(child[i], null))
+                    child[i] = _parent2[i];
+            }
+
+            return child;
+        }
+
+        public static bool isItemRepeated(List<int> item, List<List<int>> list)
+        {
+            bool answer = false;
+            foreach (List<int> i in list)
+            {
+                if (Comparable.AreEqual(i, item))
+                {
+                    answer = true;
+                    break;
+                }
+            }
+            return answer;
+        }
+
+        public static int getIndex(List<int> item, List<List<int>> list)
+        {
+            int index = 0;
+            for (int i = 0; i < list.Count(); i++)
+            {
+                if (Comparable.AreEqual(list[i],item))
+                {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        }
+
+        public static bool is_part_of_the_original_swath(int index, int cutoff1, int cutoff2)
+        {
+            bool answer;
+
+            if (index >= cutoff1 && index <= cutoff2)
+                answer = true;
+            else
+                answer = false;
+
+            return answer;
+        }
+    
     }
 }

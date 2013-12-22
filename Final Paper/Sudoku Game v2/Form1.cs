@@ -22,10 +22,10 @@ namespace GA
 
         private void btGo_Click(object sender, EventArgs e)
         {
-            int ps = 500;
-            int ng = 100;
+            int ps = 5000;
+            int ng = 75;
             double pc = 0.6;
-            double pm = 0.5;
+            double pm = 0.25;
             double ep = 0.2;
 
             ga = new GA(ps, ng, pc, pm, ep, new Random());

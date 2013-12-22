@@ -9,9 +9,18 @@
 \BOOKMARK [2][-]{subsection.2.3}{Elitismo}{section.2}% 9
 \BOOKMARK [2][-]{subsection.2.4}{Sele\347\343o dos pais}{section.2}% 10
 \BOOKMARK [3][-]{subsubsection.2.4.1}{M\351todo da roleta viciada}{subsection.2.4}% 11
-\BOOKMARK [3][-]{subsubsection.2.4.2}{Torneio}{subsection.2.4}% 12
-\BOOKMARK [2][-]{subsection.2.5}{Cruzamento \(Crossover\)}{section.2}% 13
-\BOOKMARK [3][-]{subsubsection.2.5.1}{Crossover de um ponto}{subsection.2.5}% 14
-\BOOKMARK [2][-]{subsection.2.6}{Muta\347\343o}{section.2}% 15
-\BOOKMARK [1][-]{section.3}{Resultados}{}% 16
-\BOOKMARK [1][-]{section.4}{Discussion}{}% 17
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Ranking}{subsection.2.4}% 12
+\BOOKMARK [3][-]{subsubsection.2.4.3}{Torneio}{subsection.2.4}% 13
+\BOOKMARK [2][-]{subsection.2.5}{Cruzamento \(Crossover\)}{section.2}% 14
+\BOOKMARK [3][-]{subsubsection.2.5.1}{Crossover de um ponto}{subsection.2.5}% 15
+\BOOKMARK [3][-]{subsubsection.2.5.2}{Crossover de dois pontos}{subsection.2.5}% 16
+\BOOKMARK [3][-]{subsubsection.2.5.3}{Crossover uniforme}{subsection.2.5}% 17
+\BOOKMARK [3][-]{subsubsection.2.5.4}{Partially Matched Crossover \(PMX\)}{subsection.2.5}% 18
+\BOOKMARK [3][-]{subsubsection.2.5.5}{Cycle Crossover \(CX\)}{subsection.2.5}% 19
+\BOOKMARK [3][-]{subsubsection.2.5.6}{Sudoku}{subsection.2.5}% 20
+\BOOKMARK [2][-]{subsection.2.6}{Muta\347\343o}{section.2}% 21
+\BOOKMARK [3][-]{subsubsection.2.6.1}{Muta\347\343o de um \372nico bit}{subsection.2.6}% 22
+\BOOKMARK [3][-]{subsubsection.2.6.2}{Muta\347\343o SWAP}{subsection.2.6}% 23
+\BOOKMARK [3][-]{subsubsection.2.6.3}{Muta\347\343o invers\343o}{subsection.2.6}% 24
+\BOOKMARK [1][-]{section.3}{Resultados}{}% 25
+\BOOKMARK [1][-]{section.4}{Discuss\343o}{}% 26

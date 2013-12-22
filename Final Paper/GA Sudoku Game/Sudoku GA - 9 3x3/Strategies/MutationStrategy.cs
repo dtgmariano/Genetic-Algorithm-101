@@ -8,7 +8,7 @@ namespace GA
     public static class MutationStrategy
     {
         /*Mutation method that swap subgrids of a chromossome*/
-        public static List<Individual> Swap(List<Individual> _offsprings, double probabilityMutation, Random _random)
+        public static List<Individual> SwapSubGrids(List<Individual> _offsprings, double probabilityMutation, Random _random)
         {
             List<Individual> mutants = new List<Individual>();
             int size = _offsprings[0].chromossome.Count();
@@ -76,7 +76,7 @@ namespace GA
         }
 
         /*Mutation method that swap points of a subgrid of the chromossome*/
-        public static List<Individual> Naka(List<Individual> _offsprings, double probabilityMutation, Random _random)
+        public static List<Individual> SwapSlotOfSubgrid(List<Individual> _offsprings, double probabilityMutation, Random _random)
         {
             List<Individual> mutants = new List<Individual>();
             int size = _offsprings[0].chromossome.Count();

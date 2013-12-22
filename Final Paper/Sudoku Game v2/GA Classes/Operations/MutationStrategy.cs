@@ -14,19 +14,6 @@ namespace GA
 
             foreach (Chromossome c in _offsprings)
             {
-                //List<Chromossome> solutions = new List<Chromossome>();
-                //solutions.Add(c);
-
-                //List<int> mutant_gene = c.gene;
-
-                //int swappoint1 = _random.Next(0, size);
-                //int swappoint2 = _random.Next(0, size);
-                //int value = mutant_gene[swappoint1];
-                //mutant_gene[swappoint1] = mutant_gene[swappoint2];
-                //mutant_gene[swappoint2] = value;
-                //solutions.Add(new Chromossome(mutant_gene));
-
-                //mutants.Add(ChampionStrategy.getChampion(solutions));
 
                 if (_random.NextDouble() <= probabilityMutation)
                 {

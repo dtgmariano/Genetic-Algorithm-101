@@ -49,11 +49,11 @@ namespace GA
         /*Returns a list of integers based on the distribution of sudoku */
         public static List<int> generateGrid(List<List<int>> _genes)
         {
-            int[] agrid = new int[81];
+            int[] agrid = new int[area];
 
-            for (int i = 0; i < 9; i++) 
+            for (int i = 0; i < size; i++) 
             {
-                for (int j = 0; j < 9; j++)
+                for (int j = 0; j < size; j++)
                     agrid[(3 * (i + 2 * (i - (i % 3)))) + (3 * (j - (j % 3))) + (j % 3)] = _genes[i][j];
             }
 
@@ -77,33 +77,81 @@ namespace GA
         }
 
         /*Returns the sum of the number of missing digits from each row and column from a grid*/
-        public static int calculatePenalty(List<int> grid)
+        public static int calculatePenalty(List<int> _grid9x9)
         {
             int score = 0;
 
             for (int i = 0; i < size; i++)
             {
                 /*calculates mnissing digits for each row*/
-                score += ChromossomeStrategy.calculateNumMissingDigitis(grid.GetRange(i * size, size));
+                score += ChromossomeStrategy.calculateNumMissingDigitis(_grid9x9.GetRange(i * size, size));
                 /*calculates mnissing digits for each column*/
                 score += ChromossomeStrategy.calculateNumMissingDigitis(new List<int>
-                             (new[]{grid[i], grid[i + 1*size], grid[i + 2*size], 
-                           grid[i + 3*size], grid[i + 4*size], grid[i + 5*size], 
-                           grid[i + 6*size], grid[i + 7*size], grid[i + 8*size],}));
+                             (new[]{_grid9x9[i], _grid9x9[i + 1*size], _grid9x9[i + 2*size], 
+                           _grid9x9[i + 3*size], _grid9x9[i + 4*size], _grid9x9[i + 5*size], 
+                           _grid9x9[i + 6*size], _grid9x9[i + 7*size], _grid9x9[i + 8*size],}));
+
             }
+            return score;
+        }
+
+        /*Returns the sum of the number of missing digits from each row and column from a grid*/
+        public static int calculatePenalty(List<List<int>> _gene)
+        {
+            int score = 0;
+
+            List<int> grid9x9 = generateGrid(_gene);
+
+            for (int i = 0; i < size; i++)
+            {
+                /*calculates mnissing digits for each row*/
+                score += ChromossomeStrategy.calculateNumMissingDigitis(grid9x9.GetRange(i * size, size));
+                /*calculates mnissing digits for each column*/
+                score += ChromossomeStrategy.calculateNumMissingDigitis(new List<int>
+                             (new[]{grid9x9[i], grid9x9[i + 1*size], grid9x9[i + 2*size], 
+                           grid9x9[i + 3*size], grid9x9[i + 4*size], grid9x9[i + 5*size], 
+                           grid9x9[i + 6*size], grid9x9[i + 7*size], grid9x9[i + 8*size],}));
+            }
+
+            //for (int i = 0; i < size; i++)
+            //{
+            //    List<int> sequency = new List<int>(new[] { _gene[0][i], _gene[1][i], _gene[2][i], 
+            //                                           _gene[3][i], _gene[4][i], _gene[5][i], 
+            //                                           _gene[6][i], _gene[7][i], _gene[8][i], });
+            //    var duplicated = sequency.GroupBy(x => x);
+            //    int c = duplicated.Count();
+            //    score += sequency.Count() - duplicated.Count();
+            //}
+
             return score;
         }
 
         /*Returns the fitness based on the Chromossomes's gene*/
         public static double calculatesFitness(List<List<int>> _gene)
         {
-            return 100.0 / calculatePenalty(generateGrid(_gene));
+            double fitness = 0.0;
+
+            double penalty = calculatePenalty(_gene);
+
+            if(penalty!=0)
+                fitness = 100.0 / penalty;
+            else
+                fitness = 100.0;
+            
+            return fitness;
         }
 
         /*Returns the fitness based on the Chromossome's number of penalties*/
         public static double calculatesFitness(int penaltyScore)
         {
-            return 100.0 / penaltyScore;
+            double fitness = 0.0;
+
+            if (penaltyScore != 0)
+                fitness = 100.0 / penaltyScore;
+            else
+                fitness = 100.0;
+
+            return fitness;
         }
 
     }

@@ -133,7 +133,11 @@ namespace GA
         double calculateFitness(int penalty)
         {
             double fitness = 1000.0;
-            fitness /= penalty;
+
+            if (penalty == 0)
+                fitness = 1000.0;
+            else
+                fitness /= penalty;
             return fitness;
         }
 

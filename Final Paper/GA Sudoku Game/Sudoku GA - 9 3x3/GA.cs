@@ -20,7 +20,11 @@ namespace GA
         public List<Individual> parents;
         public List<Individual> offsprings;
         public List<Individual> mutants;
-        public Individual champion;
+        //public Individual champion;
+        public Individual newChampion;
+        public Individual oldChampion;
+
+        public bool championIsOlder;
 
         /*Random variables*/
         Random random;
@@ -49,7 +53,7 @@ namespace GA
         public void populateProcedure()
         {
             this.population = PopulateStrategy.populate(this.populationSize, this.random);
-            this.champion = ChampionStrategy.getChampion(this.population);
+            this.newChampion = ChampionStrategy.getChampion(this.population);
         }
 
         public void elitismProcedure()
@@ -65,9 +69,10 @@ namespace GA
 
         public void crossoverProcedure()
         {
-            //this.offsprings = CrossoverStrategy.OneGen(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
-            this.offsprings = CrossoverStrategy.OnePoint(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
+            this.offsprings = CrossoverStrategy.OneGen(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
+            //this.offsprings = CrossoverStrategy.OnePoint(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
             //this.offsprings = CrossoverStrategy.TwoPoints(this.parents, this.selectionSize, this.probabilityCrossover, this.random);        
+            //this.offsprings = CrossoverStrategy.PMX(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
         }
 
         public void mutationProcedure()
@@ -75,13 +80,15 @@ namespace GA
             //this.mutants = MutationStrategy.Swap(this.offsprings, this.probabilityMutation, this.random);
             //this.mutants = MutationStrategy.Rand(this.offsprings, this.probabilityMutation, this.random);
             //this.mutants = MutationStrategy.Naka(this.offsprings, this.probabilityMutation, this.random);
-            this.mutants = MutationStrategy.Swaps(this.offsprings, this.probabilityMutation, this.random);
+            this.mutants = MutationStrategy.SwapSlotOfSubgrid(this.offsprings, this.probabilityMutation, this.random);
         }
 
         public void updtadeProcedure()
         {
             this.population = UpdateStrategy.updateGeneration(this.elite, this.mutants);
-            this.champion = ChampionStrategy.getChampion(this.population);
+            this.oldChampion = this.newChampion;
+            this.newChampion = ChampionStrategy.getChampion(this.population);
+            //this.champion = ChampionStrategy.getChampion(this.population);
         }
 
     }

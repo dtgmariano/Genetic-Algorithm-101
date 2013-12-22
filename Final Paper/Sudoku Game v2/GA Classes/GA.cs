@@ -65,8 +65,8 @@ namespace GA
 
         public void crossoverProcedure()
         {
-            this.offsprings = CrossoverStrategy.OneGen(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
-            //this.offsprings = CrossoverStrategy.OnePoint(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
+            //this.offsprings = CrossoverStrategy.OneGen(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
+            this.offsprings = CrossoverStrategy.OnePoint(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
         }
 
         public void mutationProcedure()

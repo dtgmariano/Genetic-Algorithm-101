@@ -18,7 +18,7 @@ namespace GA
         public Form1()
         {
             InitializeComponent();
-            ga = new GA(5000, 100, 0.8, 0.1, 0.2, 1, 0, 0, new Random());
+            ga = new GA(1000, 100, 0.8, 0.1, 0.2, 1, 0, 0, new Random());
         }
 
         private void btGo_Click(object sender, EventArgs e)
