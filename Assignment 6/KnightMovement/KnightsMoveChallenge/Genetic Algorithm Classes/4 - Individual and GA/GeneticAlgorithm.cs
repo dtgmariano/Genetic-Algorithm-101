@@ -54,6 +54,15 @@ namespace GA
             populateProcedure();
         }
 
+        public void processGeneration()
+        {
+            elitismProcedure();
+            selectionProcedure();
+            crossoverProcedure();
+            mutationProcedure();
+            updtadeProcedure();
+        }
+
         public void populateProcedure()
         {
             population = new List<Individual>();
@@ -64,32 +73,31 @@ namespace GA
             }
         }
 
+        public void elitismProcedure()
+        {
+            this.elite = ElitismStrategy.basicElitism(this.population, this.elitismSize);
+        }
 
-        //public void elitismProcedure()
-        //{
-        //    this.elite = ElitismStrategy.basicElitism(this.population, this.elitismSize);
-        //}
+        public void selectionProcedure()
+        {
+            this.parents = SelectionStrategy.doSelection(SelectionStrategy.Ops.RouletteWheel, this.population, this.selectionSize, this.tournamentSize, this.random);
+        }
 
-        //public void selectionProcedure()
-        //{
-        //    //this.parents = SelectionStrategy.RouletteWheel(this.population, this.selectionSize, this.random);
-        //    this.parents = SelectionStrategy.Tournament(this.population, this.selectionSize, this.tournamentSize, this.random);
-        //}
+        public void crossoverProcedure()
+        {
+            this.offsprings = Crossover.doCrossover(Crossover.Ops.singleGen, this.parents, this.selectionSize, this.probabilityCrossover, this.random);
+        }
 
-        //public void crossoverProcedure()
-        //{
-        //     this.offsprings = CrossoverStrategy.doCrossover(this.parents, this.selectionSize, this.probabilityCrossover, this.random);
-        //}
+        public void mutationProcedure()
+        {
+            this.mutants = Mutation.doMutation(Mutation.Ops.Swap, this.offsprings, this.probabilityMutation, this.random);
+        }
 
-        //public void mutationProcedure()
-        //{
-        //    this.mutants = MutationStrategy.doMutation(this.offsprings, this.probabilityMutation, this.random);
-        //}
-
-        //public void updtadeProcedure()
-        //{
-        //    this.population = UpdateStrategy.updateGeneration(this.elite, this.mutants);
-        //    this.champion = ChampionStrategy.getChampion(this.population);
-        //}
+        public void updtadeProcedure()
+        {
+            this.population = new List<Individual>(this.elite);
+            population.AddRange(this.mutants);
+            this.champion = ElitismStrategy.getChampion(this.population);
+        }
     }
 }

@@ -20,5 +20,13 @@ namespace GA
             fitness = ChromossomeStrategy.calculatesFitness(chromossome, startPoint);
         }
 
+        public Individual(List<string> _chromossome, Point _startPoint)
+        {
+            chromossome = _chromossome;
+            startPoint = _startPoint;
+            fitness = ChromossomeStrategy.calculatesFitness(chromossome, startPoint);
+        }
+
+
     }
 }

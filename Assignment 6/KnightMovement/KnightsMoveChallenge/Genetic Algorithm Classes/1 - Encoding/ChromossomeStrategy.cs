@@ -8,6 +8,7 @@ namespace GA
 {
     public static class ChromossomeStrategy
     {
+
         /*Returns the gene of the Chromossome: List of 3x3 subgrids */
         public static List<string> generateChromossome(Random _random)
         {
@@ -23,6 +24,16 @@ namespace GA
             }
             
             return chromossome;
+        }
+
+        public static string returnMovement(Random _random)
+        {
+            string move = Math.Round(_random.NextDouble(), 0) + "" +
+                          Math.Round(_random.NextDouble(), 0) + "" +
+                          Math.Round(_random.NextDouble(), 0) + "";
+
+
+            return move;
         }
     
 
@@ -50,6 +61,8 @@ namespace GA
 
             return fitness;
         }
+
+
 
     }
 }
