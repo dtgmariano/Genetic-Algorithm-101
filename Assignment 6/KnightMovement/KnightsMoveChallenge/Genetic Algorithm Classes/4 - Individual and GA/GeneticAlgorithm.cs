@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace GA
 {
@@ -22,6 +23,9 @@ namespace GA
         public List<Individual> mutants;
         public Individual champion;
 
+        /*Problem variables*/
+        public Point startPoint;
+
         /*Random variables*/
         Random random;
 
@@ -31,6 +35,7 @@ namespace GA
             double _probcrossover, 
             double _probmutation, 
             double _elitism_percentage,
+            Point _startPoint,
             Random _random)
         {
 
@@ -42,15 +47,23 @@ namespace GA
             this.generationsNumber = _numgenerations;
             this.probabilityCrossover = _probcrossover;
             this.probabilityMutation = _probmutation;
-            
+
+            this.startPoint = _startPoint;
             this.random = _random;
+
+            populateProcedure();
         }
 
         public void populateProcedure()
         {
-            this.population = PopulateStrategy.populate(this.populationSize, this.random);
-            this.champion = ChampionStrategy.getChampion(this.population);
+            population = new List<Individual>();
+
+            while (population.Count() < populationSize)
+            {
+                population.Add(new Individual(this.random, this.startPoint));
+            }
         }
+
 
         //public void elitismProcedure()
         //{
