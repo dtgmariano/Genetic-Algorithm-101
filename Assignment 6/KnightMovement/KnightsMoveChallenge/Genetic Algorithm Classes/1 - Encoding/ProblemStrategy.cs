@@ -63,14 +63,10 @@ namespace GA
 
             for (int i = 0; i < _chromossome.Count(); i++)
             {
-                
-            }
-
-            foreach (string s in _chromossome)
-            {
-                currentPoint = returnNextPosition(s, currentPoint);
+                currentPoint = returnNextPosition(_chromossome[i], currentPoint);
                 trajetory.Add(currentPoint);
             }
+
             return trajetory;
         }
 
